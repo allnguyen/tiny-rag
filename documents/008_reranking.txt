@@ -1,0 +1,9 @@
+Reranking is a second-stage retrieval process that refines an initial set of retrieved documents. After a fast retrieval step (BM25 or dense search), a more accurate but slower model is used to reorder results.
+
+Rerankers often use cross-encoders that jointly encode query-document pairs to compute relevance scores.
+
+This improves retrieval quality by capturing finer-grained semantic relationships than initial embedding-based search.
+
+Reranking is commonly used in production systems to balance speed and accuracy.
+
+It is especially useful when the first-stage retriever returns a large candidate set with mixed relevance.

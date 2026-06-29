@@ -1,0 +1,9 @@
+Embeddings are dense vector representations of text where semantic meaning is encoded in a continuous numerical space. Each piece of text is mapped to a high-dimensional vector, typically produced by neural networks.
+
+The key idea is that semantically similar texts are close together in vector space, measured using similarity metrics such as cosine similarity.
+
+For example, “car” and “automobile” would have similar embeddings even if they share no exact words.
+
+Embedding models are trained on large corpora using objectives that encourage semantic similarity to be reflected geometrically.
+
+Embeddings are used in search, clustering, classification, and retrieval systems. In RAG systems, embeddings allow queries and documents to be compared based on meaning rather than exact keyword overlap.

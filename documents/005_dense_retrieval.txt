@@ -1,0 +1,9 @@
+Dense retrieval is a method of searching documents using embedding similarity instead of keyword matching. Both queries and documents are converted into dense vector embeddings.
+
+Retrieval is performed by finding the nearest neighbors to the query vector in embedding space using similarity metrics like cosine similarity.
+
+Unlike BM25, dense retrieval can match semantically similar content even when no exact words overlap.
+
+Dense retrieval is typically implemented using neural embedding models trained on large datasets.
+
+It is more effective than lexical methods for paraphrased queries but can struggle with exact keyword specificity unless combined with other methods.

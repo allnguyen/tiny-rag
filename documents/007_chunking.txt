@@ -1,0 +1,9 @@
+Chunking is the process of splitting long documents into smaller segments before generating embeddings. This is necessary because embedding models have token limits and because smaller units improve retrieval precision.
+
+Common chunking strategies include fixed-size token splitting, sentence-based splitting, and structure-aware splitting using headings or markdown.
+
+Chunk size affects retrieval quality: small chunks improve precision but may lose context, while large chunks preserve context but reduce specificity.
+
+Overlapping chunks are often used to prevent important information from being split across boundaries.
+
+Chunking is a critical design decision in RAG systems and strongly influences downstream retrieval performance.

@@ -1,0 +1,9 @@
+Retrieval-Augmented Generation (RAG) is a framework that enhances large language models by retrieving relevant documents before generating a response.
+
+The pipeline consists of indexing a document corpus, retrieving relevant documents based on a query, and passing those documents as context into a language model.
+
+RAG reduces hallucination by grounding model outputs in external knowledge.
+
+The quality of a RAG system depends heavily on retrieval quality, including embedding models, chunking strategy, and ranking methods.
+
+RAG systems are widely used in question answering, enterprise search, and knowledge assistants.

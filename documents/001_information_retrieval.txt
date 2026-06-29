@@ -1,0 +1,9 @@
+Information Retrieval (IR) is the field of designing systems that find relevant information from a large collection of documents in response to a user query. The goal is not just to store data, but to rank and retrieve the most relevant content efficiently.
+
+IR systems typically operate over a corpus of documents and take a user query as input. The system outputs a ranked list of documents based on estimated relevance.
+
+Traditional IR methods rely on lexical matching (matching words), while modern systems often combine lexical and semantic methods.
+
+Core components of IR systems include document indexing, query processing, ranking functions, and evaluation metrics such as precision, recall, and nDCG.
+
+IR is foundational to search engines, recommendation systems, and modern retrieval-augmented generation (RAG) systems.

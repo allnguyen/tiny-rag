@@ -1,0 +1,9 @@
+Vector databases are specialized systems designed to store and search high-dimensional embedding vectors efficiently.
+
+They support approximate nearest neighbor (ANN) search, allowing fast retrieval of similar vectors even in large datasets.
+
+Examples include FAISS, Chroma, Pinecone, and Weaviate.
+
+Vector databases typically store embeddings alongside metadata such as document IDs and source text. They optimize search using indexing techniques like HNSW or IVF.
+
+They are a core infrastructure component in modern RAG systems because they enable scalable semantic search.

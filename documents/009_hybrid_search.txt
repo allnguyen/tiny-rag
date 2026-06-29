@@ -1,0 +1,9 @@
+Hybrid search combines lexical retrieval methods like BM25 with dense retrieval methods based on embeddings. The goal is to leverage the strengths of both approaches.
+
+BM25 is strong at exact keyword matching, while dense retrieval is strong at semantic similarity.
+
+Hybrid systems typically combine scores from both methods using weighted sums or merge ranked lists.
+
+This approach improves robustness across different query types, including both keyword-heavy and paraphrased queries.
+
+Hybrid search is widely used in production RAG systems because it provides better coverage and reduces failure cases of single-method retrieval.

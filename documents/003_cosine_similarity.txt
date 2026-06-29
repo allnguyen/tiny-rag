@@ -1,0 +1,9 @@
+Cosine similarity is a metric used to measure the similarity between two vectors by computing the cosine of the angle between them. It is widely used in embedding-based retrieval systems.
+
+The formula compares the dot product of two vectors divided by the product of their magnitudes.
+
+Cosine similarity ranges from -1 to 1, where 1 means the vectors are identical in direction, 0 means orthogonal (unrelated), and -1 means opposite.
+
+In text retrieval, cosine similarity is preferred because it focuses on direction rather than magnitude, making it robust for comparing embedding vectors.
+
+It is a core operation in nearest neighbor search when retrieving relevant documents from an embedding database.
