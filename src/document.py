@@ -8,7 +8,4 @@ class Document:
     filename: str
     text: str
     filepath: str
-
-    #from typing import Optional
-
-    #embedding: Optional[list[float]] = None
+    embedding: Optional[list[float]] = None

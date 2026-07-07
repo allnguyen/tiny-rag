@@ -1,24 +1,30 @@
 import ollama
 
+from config import EMBEDDING_MODEL, OLLAMA_URL
+
+
 class EmbeddingGenerator:
-        def __init__(self, embedding_model='EMBEDDING_MODEL')
+        def __init__(
+            self, 
+            embedding_model=EMBEDDING_MODEL, 
+            ollama_url=OLLAMA_URL
+        ):
             self.model = embedding_model
+            self.ollama_url=ollama_url
 
-def embedding_generator(self, text):
-    response = ollama.embed(            # Call on Ollama
-        model = self.model
-        input = text
-    )
-    vector = response['embeddings'][0]   
-    return vector
+        def generate(self, text: str) -> list[float]:
+            response = ollama.embed(            # Call Ollama
+                model = self.model,
+                input = text,
+            )
 
-# Initialize generator
-generator = EmbeddingGenerator(embedding_model='EMBEDDING_MODEL')
-
-
+            vector = response["embeddings"][0]   
+            
+            return vector
 
 
-# In official Ollama Python library, the ollama.embed response dictionary 
-# returns a list under the key 'embeddings'
+
+
+
 
 

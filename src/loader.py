@@ -1,6 +1,6 @@
 import os 
 from document import Document
-from config import DOCUMENTS_PATH
+
 
 # Simple loader that reads all txt files from a directory 
 

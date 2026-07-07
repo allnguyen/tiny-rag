@@ -1,23 +1,64 @@
 from config import DOCUMENTS_PATH
-from loader import loader_function 
+from loader import loader_function
+from embedding import EmbeddingGenerator
 
 
+# ==============================
+# 1. Load documents
+# ==============================
+
+documents = loader_function(DOCUMENTS_PATH)
 
 
+# ==============================
+# 2. Summarize corpus
+# ==============================
 
-documents = loader_function(DOCUMENTS_PATH) # calls loader_function with directory path and stores variable called documents. returns list for later
-#generator = EmbeddingGenerator()
+print("\n==============================")
+print("Corpus Summary")
+print("==============================")
 
+print(f"Documents loaded: {len(documents)}")
 
-print(f"\n Documents loaded: {len(documents)}") # prints the number of documents that were loaded.
-
-if documents: # checks if the documents list has any items or successfully loaded
-    print("\n Documents Titles:")
+if documents:
+    print("\nDocuments:")
     for doc in documents:
-        print(f"    {doc.id}: {doc.title}")
+        print(f"  {doc.id}: {doc.title}")
 else:
     print("No documents found.")
-                                    
+    exit()
 
-#for document in documents:
-    #document.embedding = generator.generate(document.text)
+
+# ==============================
+# 3. Initialize embedding generator
+# ==============================
+
+generator = EmbeddingGenerator()
+
+
+# ==============================
+# 4. Generate embeddings
+# ==============================
+
+print("\n==============================")
+print("Generating Embeddings")
+print("==============================")
+
+
+for document in documents:
+    document.embedding = generator.generate(document.text)
+
+    print(f"\n✓ {document.title}")
+    print(f"  Embedding dimensions: {len(document.embedding)}")
+    print(f"  First 5 values: {document.embedding[:5]}")
+
+
+# ==============================
+# 5. Final summary
+# ==============================
+
+print("\n==============================")
+print("Embedding Generation Complete")
+print("==============================")
+
+print(f"Successfully embedded {len(documents)} documents.")
