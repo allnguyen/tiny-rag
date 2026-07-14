@@ -1,88 +1,132 @@
+"""
+main.py
+
+Entry point for the tiny RAG retrieval system. 
+
+This file coordinates the pipeline:
+
+1. Load documents
+2. Generate document embeddings
+3. Accepts user query
+4. Generate query embedding
+5. Retrieve most relevant documents
+6. Display results
+"""
+
+
+
 from config import DOCUMENTS_PATH
 from loader import loader_function
 from embedding import EmbeddingGenerator
 from retriever import Retriever
-from similarity import cosine_similarity
 
 
-# ==============================
+# ====================================
 # 1. Load documents
-# ==============================
+# ====================================
 
 documents = loader_function(DOCUMENTS_PATH)
 
-
-# ==============================
-# 2. Summarize corpus
-# ==============================
-
-print("\n==============================")
-print("Corpus Summary")
-print("==============================")
-
-print(f"Documents loaded: {len(documents)}")
-
-if documents:
-    print("\nDocuments:")
-    for doc in documents:
-        print(f"  {doc.id}: {doc.title}")
-else:
+if not documents:
     print("No documents found.")
     exit()
 
 
-# ==============================
-# 3. Initialize embedding generator
-# ==============================
+print("\n==============================")
+print("Corpus Summary")
+print("================================")
+
+print(f"Documents loaded: {len(documents)}")
+
+for document in documents:
+    print(f"{document.id}: {document.title}")
+
+
+# =====================================
+# 2. Generate document embeddings
+# =====================================
+
+
+print("\n==============================")
+print("Generating Embeddings")
+print("================================")
+
+
 
 generator = EmbeddingGenerator()
 
 
-# ==============================
-# 4. Generate embeddings
-# ==============================
-
-print("\n==============================")
-print("Generating Embeddings")
-print("==============================")
-
 
 for document in documents:
-    document.embedding = generator.generate(document.text)
+    document.embedding = generator.generate(
+        document.text
+    )
 
     print(f"\n✓ {document.title}")
-    print(f"  Embedding dimensions: {len(document.embedding)}")
-    print(f"  First 5 values: {document.embedding[:5]}")
+    print(
+        f"  Dimensions: {len(document.embedding)}"
+    )
+    print(
+        f"  First 5 values: {document.embedding[:5]}"
+    )
 
 
-# ==============================
-# 5. Final summary
-# ==============================
-
-print("\n==============================")
-print("Embedding Generation Complete")
-print("==============================")
-
-print(f"Successfully embedded {len(documents)} documents.")
+print("\nDocument embeddings complete.")
 
 
-# =======================
-# Retreival 
-# =======================
 
-retriever = Retriever(documents) # Pass retreiver object to Retriever class
+# =======================================
+# 3. Initialize retriever 
+# =======================================
+
+retriever = Retriever(documents) 
+
+
+# =======================================
+# 4. User query
+# =======================================
 
 user_query = "What is BM25?"
 
-query_embedding = generator.generate(user_query)
 
-results = retriever.search(query_embedding)
+
+print("\n==============================")
+print("Search Query")
+print("==============================")
+
+print(user_query)
+
+
+# ===================================
+# 5. Generate query embedding
+# ===================================
+
+query_embedding = generator.generate(
+    user_query
+)
+
+
+# ===================================
+# 6. Retrieve documents
+# ===================================
+
+results = retriever.search(
+    query_embedding,
+    top_k=3
+)
+
+
+# ===================================
+# 7. Display results
+# ===================================
 
 print("\n==============================")
 print("Retrieval Results")
 print("==============================")
 
-print("User Query:")
-print(user_query)
-print("Top 3 Results")
-print(results)
+
+for rank, (document, score) in enumerate(results, start=1):
+
+    print(f"\nRank {rank}")
+    print(f"Document: {document.title}")
+    print(f"Similarity Score: {score:.4f}")
