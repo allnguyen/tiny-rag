@@ -1,6 +1,8 @@
 from config import DOCUMENTS_PATH
 from loader import loader_function
 from embedding import EmbeddingGenerator
+from retriever import Retriever
+from similarity import cosine_similarity
 
 
 # ==============================
@@ -62,3 +64,12 @@ print("Embedding Generation Complete")
 print("==============================")
 
 print(f"Successfully embedded {len(documents)} documents.")
+
+
+# =======================
+# Retreival
+# =======================
+
+retriever = Retriever(documents)
+results = retriever.search(query_embedding)
+query_embedding = generator.generate(user_query)
