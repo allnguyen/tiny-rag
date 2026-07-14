@@ -67,9 +67,22 @@ print(f"Successfully embedded {len(documents)} documents.")
 
 
 # =======================
-# Retreival
+# Retreival 
 # =======================
 
-retriever = Retriever(documents)
-results = retriever.search(query_embedding)
+retriever = Retriever(documents) # Pass retreiver object to Retriever class
+
+user_query = "What is BM25?"
+
 query_embedding = generator.generate(user_query)
+
+results = retriever.search(query_embedding)
+
+print("\n==============================")
+print("Retrieval Results")
+print("==============================")
+
+print("User Query:")
+print(user_query)
+print("Top 3 Results")
+print(results)
