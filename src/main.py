@@ -97,14 +97,19 @@ print("==============================")
 print(user_query)
 
 
-# ===================================
+# =====================================
 # 5. Generate query embedding
-# ===================================
+# =====================================
 
 query_embedding = generator.generate(
     user_query
 )
 
+# Debug to confirm Document embeddings, query embeddings, work and have same dimension 
+
+print("\nTesting query embedding...")
+print(f"Query dimensions: {len(query_embedding)}")
+print(f"First 5 values: {query_embedding[:5]}")
 
 # ===================================
 # 6. Retrieve documents
