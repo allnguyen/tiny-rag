@@ -1,42 +1,54 @@
-Tiny RAG (Retrieval-Augmented Generation)
-A small learning project to better understand how Retrieval-Augmented Generation (RAG) systems work. 
+# Tiny RAG — Building a Retrieval System from First Principles
 
-Overview:
-This project explores the core components of a RAG pipeline by combining document retrieval with a Large Language Model (LLM) to answer questions using external knowledge.
+A lightweight Retrieval-Augmented Generation (RAG) learning project focused on understanding the core mechanics of modern information retrieval systems without relying on high-level frameworks such as LangChain or LlamaIndex.
 
-The goal is to gain hands-on experience with modern AI application development rather than build a production-ready system. 
+Rather than treating RAG as a black box, this project implements each component individually to understand how semantic search works under the hood—from loading documents and generating embeddings to retrieving relevant information using vector similarity.
 
-Features:
-- Load and process text documents
-- Split documents into smaller chinks
-- Generate embeddings for document chunks
-- Store and retrieve relevant information from a vector database
-- Retrieve the most relevant context for user's question
-- Send retrieved context to an LLM to generate grounded responses
+> **Project Status:** Retrieval pipeline complete (semantic search). Generation pipeline under development.
 
-Technologies: 
-- Python
-- LLM APIs
-- Embeddings
-- Vector database
-- Retrieval-Augmented Generation (RAG)
+---
 
-Learning Goals
-This project helped me understand:
-- The architecture of RAG systems
-- Document chunking strategies
-- Semantic search using embeddings
-- Context retrieval
-- Prompt construction for grounded responses
-- End-to-end LLM application development
+# Motivation
 
-Why I Built This
-I'm interested in AI infrastructure and machine learning applications. As someone with experience in AI data annotation and evaluation, I wanted to better understand how retreival systems work behind modern LLM-powered applications. 
+Modern AI applications increasingly rely on Retrieval-Augmented Generation (RAG) to provide accurate, grounded responses from external knowledge sources. While many tutorials use frameworks that abstract away the underlying retrieval process, this project focuses on implementing the retrieval system from scratch.
 
-Current Status:
+The objectives are to:
 
-High-Level Architecture
+* Understand dense semantic retrieval from first principles.
+* Learn how embeddings represent natural language.
+* Build modular software components using sound software engineering principles.
+* Gain practical experience with the architecture behind production RAG systems.
 
+---
+
+# Current Features
+
+## Implemented
+
+* ✅ Load a corpus of text documents
+* ✅ Represent documents using structured data classes
+* ✅ Generate dense embeddings locally with Ollama
+* ✅ Compute cosine similarity between embeddings
+* ✅ Perform semantic retrieval using brute-force vector search
+* ✅ Rank retrieved documents by similarity score
+* ✅ Return the Top-K most relevant documents
+
+## Planned
+
+* ⏳ Document chunking
+* ⏳ Vector indexing (uSearch)
+* ⏳ Persistent embedding storage
+* ⏳ Retrieval evaluation metrics
+* ⏳ Hybrid search (BM25 + Dense Retrieval)
+* ⏳ Cross-encoder reranking
+* ⏳ LLM response generation
+* ⏳ Complete Retrieval-Augmented Generation pipeline
+
+---
+
+# High-Level Architecture
+
+```text
                     User Query
                          │
                          ▼
@@ -59,135 +71,328 @@ Document.embedding               cosine_similarity()
                        ▼
               Sort Highest → Lowest
                        ▼
-                Return Top-k Results
+                Return Top-K Results
+```
 
+---
 
-Everything begins with a corpus of text documents. 
------------------------------------------------------------------------------------------------------------
-Component Overview:
+# Retrieval Pipeline
 
-1. Document
+The current system executes the following pipeline:
 
-Responsibility: Represent a single document within a corpus. 
-A Document contains metadata together with its text and eventually its embedding vector. 
+```
+Text Documents
+      │
+      ▼
+Document Loader
+      │
+      ▼
+Document Objects
+      │
+      ▼
+Embedding Generator (Ollama)
+      │
+      ▼
+Document Embeddings
+      │
+      ▼
+User Query
+      │
+      ▼
+Query Embedding
+      │
+      ▼
+Retriever
+      │
+      ▼
+Cosine Similarity
+      │
+      ▼
+Rank Documents
+      │
+      ▼
+Top-K Results
+```
 
-Document
-├── id
-├── title
-├── filename
-├── filepath
-├── text
-└── embedding
+The retrieval system currently performs **dense semantic search** using cosine similarity over locally generated embedding vectors.
 
-Under Single Responsibility Principle, a Document does not know how to:
-- generate embeddings
-- retrieve itself
-- rank itself
-- compute similarity
+---
 
-It simply stores information. 
+# Project Structure
 
-2. Loader
+```text
+tiny-rag/
+│
+├── config.py
+├── document.py
+├── loader.py
+├── embedding.py
+├── similarity.py
+├── retriever.py
+├── main.py
+├── requirements.txt
+│
+└── documents/
+    ├── 001_information_retrieval.txt
+    ├── 002_embeddings.txt
+    ├── 003_cosine_similarity.txt
+    ├── ...
+```
 
-Responsibility: Read every text file from disk and create Document objects. 
+---
+
+# Component Overview
+
+## Document
+
+Represents a single document in the corpus.
+
+Stores:
+
+* ID
+* Title
+* File metadata
+* Raw text
+* Embedding vector
+
+The `Document` class is intentionally a data container and contains no retrieval logic.
+
+---
+
+## Loader
+
+Reads every text file from the corpus directory and converts each into a `Document` object.
+
+Responsible only for:
+
+* File discovery
+* Reading files
+* Creating document objects
+
+---
+
+## EmbeddingGenerator
+
+Converts natural language into dense numerical vectors using a locally hosted Ollama embedding model.
 
 Input:
-documents/
+
+```
+Text
+```
 
 Output:
-list[Document]
 
-The loader is the only component that understands:
-- folders
-- filenames
-- file I/O
-- UTF-8 encoding
+```
+Embedding Vector
+```
 
-Every other component receives already-loaded Document objects.
+This component encapsulates all interaction with Ollama.
 
-3. EmbeddingGenerator
+---
 
-Responsibility: Convert natural language into numerical vector representations.
+## Similarity
 
-Input: 
-text
+Provides reusable mathematical utilities for comparing embedding vectors.
 
-Output: 
-list[float]
+Currently implements:
 
-Internally it communicates with Ollama. 
-Under principle of encapsulation, the other components never needs to know
-- API endpoints
-- embedding model names
-- HTTP requests
-Those details are hidden inside the class.
+* Cosine Similarity
 
-4. Cosine similarity
+The module is intentionally independent of the retrieval system.
 
-Responsibility: Measure semantic similarity between two vectors. 
+---
 
-Input:
-vector A
-vector B
+## Retriever
 
-Output: 
-float
+Performs semantic search across the document corpus.
 
-The function only performs mathematics, has no permanent state, therefore, is implemented as a 
-standalone function rather than a class. 
+Responsibilities:
 
-Under Single Responsibility Principle, it knows nothing about
-- documents
-- retrieval
-- AI
+* Compare query embedding against every document embedding
+* Compute similarity scores
+* Rank documents
+* Return the Top-K most relevant matches
 
-5. Retriever
+The retriever assumes embeddings already exist and does not generate them.
 
-Responsibility: Find the most relevant documents
+---
 
-Input: 
-query embedding
+## Main
 
-Output:
-list[(Document, score)]
+Coordinates the complete retrieval pipeline.
 
-Internally it:
-- iterates through every document
-- compares embeddings
-- computes cosine similarity
-- stores results
-- sorts results
-- returns the top k
+Responsibilities:
 
-Retriever does not kow how embeddings were created, it assuems document already contains one. 
+1. Load documents
+2. Generate embeddings
+3. Embed user query
+4. Retrieve documents
+5. Display ranked results
 
-6. Main
+Business logic remains inside dedicated modules.
 
-Responsibility: Coordinate the entire pipeline.
+---
 
-Main contains almost no business logic, orchestrates components in sequence, and effectively the conductor of the application. 
---------------------------------------------------------------------------------------------------------
-Current Limitations:
+# Technologies
 
-1. Whole-document retrieval 
-Current 1 embedding = 1 document. Eventually, we will transition this project to retrieve chunks
-to emulate more a production RAG system. 
+* Python
+* Ollama
+* nomic-embed-text
+* Dense Vector Embeddings
+* Cosine Similarity
+* Semantic Search
+* Retrieval-Augmented Generation (RAG)
 
-2. No vector index
-Every search compares every document. There is no acceleration.
+Future:
 
-3. Embeddings regenerated every execuation. Every run recomputes embeddings.
-Eventually, we will transition this project to precompute and persist embeddings. 
+* uSearch
+* Hybrid Retrieval
+* Cross-Encoder Reranking
 
-4. No evaluation
-This system currently has measurements under development such as:
-- Recall@k
-- MRR
-- Precision
-- Latency
+---
 
-5. No reranking 
-Ranking currently is determined solely by similarity score. Eventually we will develop second-stage reranker. 
+# Design Principles
 
-6. No Language model
-We will develop generation. 
+This project emphasizes modular software architecture in addition to machine learning concepts.
+
+Each module has a single responsibility:
+
+| Component          | Responsibility             |
+| ------------------ | -------------------------- |
+| Document           | Store document data        |
+| Loader             | Read corpus from disk      |
+| EmbeddingGenerator | Generate embeddings        |
+| Similarity         | Compare vectors            |
+| Retriever          | Perform semantic retrieval |
+| Main               | Orchestrate the pipeline   |
+
+This separation makes components independently testable and replaceable. For example, the current brute-force retrieval implementation can later be replaced with a vector index (uSearch) without changing the rest of the system.
+
+---
+
+# Current Limitations
+
+This project intentionally prioritizes understanding over optimization.
+
+Current limitations include:
+
+* Retrieval operates on entire documents rather than chunks.
+* Document embeddings are regenerated each execution.
+* Retrieval uses brute-force search (`O(N)`).
+* No vector index has been implemented yet.
+* No retrieval evaluation metrics (Recall@K, MRR, Precision, Latency).
+* No reranking stage.
+* No language model response generation.
+
+These limitations are intentional and will be addressed incrementally throughout future development.
+
+---
+
+# Example Output
+
+```text
+==============================
+Retrieval Results
+==============================
+
+Query:
+What is BM25?
+
+Rank 1
+Document: BM25
+Similarity Score: 0.9412
+
+Rank 2
+Document: Information Retrieval
+Similarity Score: 0.8817
+
+Rank 3
+Document: Hybrid Search
+Similarity Score: 0.8125
+```
+
+---
+
+# Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/<your-username>/tiny-rag.git
+
+cd tiny-rag
+```
+
+Install Python dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Install the embedding model:
+
+```bash
+ollama pull nomic-embed-text
+```
+
+Run the project:
+
+```bash
+python main.py
+```
+
+---
+
+# Roadmap
+
+## Phase 1 — Retrieval Foundations ✅
+
+* [x] Document loading
+* [x] Structured document representation
+* [x] Local embedding generation
+* [x] Cosine similarity
+* [x] Semantic retrieval
+* [x] Top-K ranking
+
+## Phase 2 — Retrieval Improvements
+
+* [ ] Document chunking
+* [ ] Chunk embeddings
+* [ ] Persistent vector storage
+* [ ] uSearch vector index
+* [ ] Retrieval benchmarking
+* [ ] Recall@K
+* [ ] Mean Reciprocal Rank (MRR)
+* [ ] Latency measurements
+
+## Phase 3 — Production-Style RAG
+
+* [ ] Hybrid Retrieval (BM25 + Dense)
+* [ ] Cross-Encoder Reranking
+* [ ] Prompt construction
+* [ ] LLM response generation
+* [ ] End-to-end Retrieval-Augmented Generation pipeline
+
+---
+
+# What I'm Learning
+
+This project has helped me develop a practical understanding of:
+
+* Information Retrieval (IR)
+* Semantic Search
+* Dense Embeddings
+* Vector Similarity
+* Retrieval-Augmented Generation (RAG)
+* Software architecture for AI systems
+* Modular component design
+* Retrieval system evaluation
+
+More importantly, it has given me an appreciation for how production retrieval systems are engineered—from the underlying mathematics of vector similarity to the software design decisions that make complex AI systems maintainable and extensible.
+
+---
+
+# License
+
+This project is intended for educational and learning purposes.

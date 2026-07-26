@@ -1,6 +1,2 @@
-To run:
-1. Make sure Ollama is running 
-Powershell:
-ollama list
-
-2. 
+ollama
+requests

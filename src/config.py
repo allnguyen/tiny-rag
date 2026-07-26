@@ -19,6 +19,6 @@ OLLAMA_URL = "http://localhost:11434/api/embed"
 EMBEDDING_MODEL = "nomic-embed-text"
 
 # Optional metadata.
-# None means we allow the modelto determine the dimension.
+# None means we allow the model to determine the dimension.
 # Example: nomic-embed-text produces 769 dimensions
 EMBEDDING_DIMENSIONS = None
