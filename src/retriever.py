@@ -1,74 +1,70 @@
 """
 retriever.py
 
-Retrieves the most relevant documents from a corpus using
-semantic similarity between query and document embeddings.
+Performs semantic retrieval over a collection of embedded chunks.
 
-The Retriever does not generate embeddings or load documents.
-It only compares vectors and ranks results.
+Given a query embedding, the Retriever computes the cosine similarity
+between the query and every chunk embedding, ranks the results, and
+returns the top-k most relevant chunks.
+
+The Retriever is responsible only for retrieval. It does not:
+- load files
+- generate embeddings
+- communicate with an LLM
+- perform prompt engineering
 """
 
-from document import Document
+from chunk import Chunk
 from similarity import cosine_similarity
 
 
 
 class Retriever:
     """
-    Performs semantic retrieval over a collection of documents.
+    Retrieves the most semantically similar chunks from an embedded corpus.
     """
 
-    def __init__(self, documents: list[Document]):
+    def __init__(self, chunks: list[Chunk]):
         """
-        Store the document collection.
+        Initialize the Retriever.
 
-        Parameters
-        ----------
-        document : list[Document]
-            Documents that have already been embedded.
+        Args:
+            chunks: A collection of Chunk objects with precomputed embeddings.
         """
-        self.documents = documents 
+        self.chunks = chunks 
     
 
     def search(
         self, 
         query_embedding: list[float], 
         top_k: int = 3
-    ) -> list[tuple[Document, float]]:
+    ) -> list[tuple[Chunk, float]]:
         
         """
-        Retrieve the most similar documents to a query.
+        Retrieve the top-k chunks most similar to a query.
 
-        Parameters
-        ----------
-        query_embedding : list[float]
-            Vector representation of the user's query.
+        Args:
+            query_embedding: Embedding vector representing the user's query.
+            top_k: Maximum number of results to return.
 
-        top_k : int
-            Number of results to return.
-
-        Returns
-        -------
-        list[tuple[Document, float]]
-            Documents paired with their similarity scores,
-            sorted from highest similarity to lowest.
+        Returns:
+            A list of (Chunk, similarity_score) tuples sorted in
+            descending order of cosine similarity.
         """
+        results: list[tuple[Chunk, float]] = []
 
-        results = []
-
-        # Compare the query against every document
-        for document in self.documents:
+        # Compare the query against every chunk in the corpus
+        for chunk in self.chunks:
 
             score = cosine_similarity(
                 query_embedding, 
-                document.embedding
+                chunk.embedding,
             )
 
-            results.append(
-                (document, score)
-            )
+            results.append((chunk, score))
+            
 
-        # Rank documents by similarity score
+        # Rank chunks by similarity score
         results.sort(
             key=lambda item: item[1], 
             reverse=True

@@ -1,22 +1,22 @@
 """
 main.py
 
-Entry point for the tiny RAG retrieval system. 
+Entry point for the tiny RAG retrieval system.
 
-This file coordinates the pipeline:
+Pipeline:
 
-1. Load documents
-2. Generate document embeddings
-3. Accepts user query
-4. Generate query embedding
-5. Retrieve most relevant documents
-6. Display results
+1. Load documents from disk
+2. Split documents into retrievable chunks
+3. Generate embeddings for each chunk
+4. Initialize semantic retriever
+5. Generate embedding for user query
+6. Retrieve most relevant chunks
+7. Display retrieval results
 """
-
-
 
 from config import DOCUMENTS_PATH
 from loader import loader_function
+from chunker import Chunker
 from embedding import EmbeddingGenerator
 from retriever import Retriever
 
@@ -33,62 +33,64 @@ if not documents:
 
 
 print("\n==============================")
-print("Corpus Summary")
-print("================================")
+print("Corpus Loaded")
+print("==============================")
 
 print(f"Documents loaded: {len(documents)}")
 
+
+# ====================================
+# 2. Chunk documents
+# ====================================
+
+chunker = Chunker()
+
+all_chunks = []
+
 for document in documents:
-    print(f"{document.id}: {document.title}")
-
-
-# =====================================
-# 2. Generate document embeddings
-# =====================================
+    chunks = chunker.chunk(document)
+    all_chunks.extend(chunks)
 
 
 print("\n==============================")
-print("Generating Embeddings")
-print("================================")
+print("Chunking Complete")
+print("==============================")
+
+print(f"Total chunks created: {len(all_chunks)}")
 
 
+# ====================================
+# 3. Generate chunk embeddings
+# ====================================
 
 generator = EmbeddingGenerator()
 
+print("\n==============================")
+print("Generating Chunk Embeddings")
+print("==============================")
 
 
-for document in documents:
-    document.embedding = generator.generate(
-        document.text
-    )
-
-    print(f"\n✓ {document.title}")
-    print(
-        f"  Dimensions: {len(document.embedding)}"
-    )
-    print(
-        f"  First 5 values: {document.embedding[:5]}"
+for chunk in all_chunks:
+    chunk.embedding = generator.generate(
+        chunk.text
     )
 
 
-print("\nDocument embeddings complete.")
+print(f"Embedded {len(all_chunks)} chunks.")
 
 
+# ====================================
+# 4. Initialize Retriever
+# ====================================
 
-# =======================================
-# 3. Initialize retriever 
-# =======================================
-
-retriever = Retriever(documents) 
+retriever = Retriever(all_chunks)
 
 
-# =======================================
-# 4. User query
-# =======================================
+# ====================================
+# 5. User Query
+# ====================================
 
 user_query = "What is BM25?"
-
-
 
 print("\n==============================")
 print("Search Query")
@@ -97,41 +99,44 @@ print("==============================")
 print(user_query)
 
 
-# =====================================
-# 5. Generate query embedding
-# =====================================
+# ====================================
+# 6. Generate query embedding
+# ====================================
 
 query_embedding = generator.generate(
     user_query
 )
 
-# Debug to confirm Document embeddings, query embeddings, work and have same dimension 
 
-print("\nTesting query embedding...")
-print(f"Query dimensions: {len(query_embedding)}")
+print("\nQuery embedding generated.")
+print(f"Dimensions: {len(query_embedding)}")
 print(f"First 5 values: {query_embedding[:5]}")
 
-# ===================================
-# 6. Retrieve documents
-# ===================================
+
+# ====================================
+# 7. Retrieve relevant chunks
+# ====================================
 
 results = retriever.search(
     query_embedding,
-    top_k=3
+    top_k=3,
 )
 
 
-# ===================================
-# 7. Display results
-# ===================================
+# ====================================
+# 8. Display results
+# ====================================
 
 print("\n==============================")
 print("Retrieval Results")
 print("==============================")
 
 
-for rank, (document, score) in enumerate(results, start=1):
+for rank, (chunk, score) in enumerate(results, start=1):
 
     print(f"\nRank {rank}")
-    print(f"Document: {document.title}")
+    print(f"Chunk ID: {chunk.id}")
+    print(f"Document ID: {chunk.document_id}")
     print(f"Similarity Score: {score:.4f}")
+    print("Text:")
+    print(chunk.text)

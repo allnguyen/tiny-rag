@@ -14,7 +14,7 @@ class Chunker:
     """
     Converts a Document into a list of sentence-based Chunk objects.
 
-    This class is stateless. Eaach document is processed independently.
+    This class is stateless. Each document is processed independently.
 
     """
 
@@ -52,11 +52,3 @@ class Chunker:
         return chunks
 
 
-
-# ========================================
-# Generate chunk embeddings
-#=========================================
-
-chunker = Chunker()
-all_chunks = []
-chunker.chunk(document.text)
