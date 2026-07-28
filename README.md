@@ -4,7 +4,7 @@ A lightweight Retrieval-Augmented Generation (RAG) learning project focused on u
 
 Rather than treating RAG as a black box, this project implements each component individually to understand how semantic search works under the hood—from loading documents and generating embeddings to retrieving relevant information using vector similarity.
 
-> **Project Status:** Retrieval pipeline complete (semantic search). Generation pipeline under development.
+> **Project Status:** Chunk-based semantic retrieval pipeline complete. Retrieval evaluation and generation pipeline under active development.
 
 ---
 
@@ -30,12 +30,14 @@ The objectives are to:
 * ✅ Generate dense embeddings locally with Ollama
 * ✅ Compute cosine similarity between embeddings
 * ✅ Perform semantic retrieval using brute-force vector search
-* ✅ Rank retrieved documents by similarity score
-* ✅ Return the Top-K most relevant documents
+* ✅ Split documents into sentence-based retrieval chunks
+* ✅ Generate embeddings for individual chunks
+* ✅ Perform chunk-level semantic retrieval
+* ✅ Rank retrieved chunks using cosine similarity
+* ✅ Return the Top-K most relevant chunks
 
 ## Planned
 
-* ⏳ Document chunking
 * ⏳ Vector indexing (uSearch)
 * ⏳ Persistent embedding storage
 * ⏳ Retrieval evaluation metrics
@@ -63,7 +65,7 @@ The objectives are to:
         ┌────────────────┴────────────────┐
         │                                 │
         ▼                                 ▼
-Document.embedding               cosine_similarity()
+chunk.embedding                 cosine_similarity()
         │                                 │
         └──────────────┬──────────────────┘
                        ▼
@@ -71,8 +73,8 @@ Document.embedding               cosine_similarity()
                        ▼
               Sort Highest → Lowest
                        ▼
-                Return Top-K Results
-```
+                Return Top-K Chunks
+
 
 ---
 
@@ -90,10 +92,16 @@ Document Loader
 Document Objects
       │
       ▼
-Embedding Generator (Ollama)
+Chunker
       │
       ▼
-Document Embeddings
+Chunk Objects
+      │
+      ▼
+Embedding Generator 
+      │
+      ▼
+Chunk Embeddings
       │
       ▼
 User Query
@@ -108,11 +116,11 @@ Retriever
 Cosine Similarity
       │
       ▼
-Rank Documents
+Rank Chunks
       │
       ▼
 Top-K Results
-```
+
 
 The retrieval system currently performs **dense semantic search** using cosine similarity over locally generated embedding vectors.
 
@@ -126,6 +134,8 @@ tiny-rag/
 ├── config.py
 ├── document.py
 ├── loader.py
+├── chunk.py
+├── chunker.py
 ├── embedding.py
 ├── similarity.py
 ├── retriever.py
@@ -170,7 +180,35 @@ Responsible only for:
 * Creating document objects
 
 ---
+## Chunk
 
+Represents the fundamental retrieval unit within the corpus.
+
+Stores:
+
+Chunk ID
+Parent document ID
+Chunk text
+Embedding vector
+
+Unlike a Document, a Chunk is designed to be retrieved directly by the semantic search pipeline.
+---
+## Chunker
+
+Transforms a Document into a collection of smaller retrievable units.
+
+Current strategy:
+
+Sentence-based chunking
+
+Future strategies:
+
+Paragraph chunking
+Token-based chunking
+Semantic chunking
+
+Separating chunking into its own component allows retrieval strategies to evolve independently of the rest of the pipeline.
+---
 ## EmbeddingGenerator
 
 Converts natural language into dense numerical vectors using a locally hosted Ollama embedding model.
@@ -209,10 +247,10 @@ Performs semantic search across the document corpus.
 
 Responsibilities:
 
-* Compare query embedding against every document embedding
+* Compare query embedding against every chunk embedding
 * Compute similarity scores
-* Rank documents
-* Return the Top-K most relevant matches
+* Rank chunks by semantic similarity
+* Return the Top-K most relevant chunks
 
 The retriever assumes embeddings already exist and does not generate them.
 
@@ -227,7 +265,7 @@ Responsibilities:
 1. Load documents
 2. Generate embeddings
 3. Embed user query
-4. Retrieve documents
+4. Retrieve chunks
 5. Display ranked results
 
 Business logic remains inside dedicated modules.
@@ -258,14 +296,16 @@ This project emphasizes modular software architecture in addition to machine lea
 
 Each module has a single responsibility:
 
-| Component          | Responsibility             |
-| ------------------ | -------------------------- |
-| Document           | Store document data        |
-| Loader             | Read corpus from disk      |
-| EmbeddingGenerator | Generate embeddings        |
-| Similarity         | Compare vectors            |
-| Retriever          | Perform semantic retrieval |
-| Main               | Orchestrate the pipeline   |
+| Component          | Responsibility                 |
+| ------------------ | -------------------------------|
+| Document           | Store document data            |
+| Loader             | Read corpus from disk          |
+| Chunk              | Stores retrievable unit        |
+| Chunker            | Transform Document into Chunks |
+| EmbeddingGenerator | Generate embeddings            |
+| Similarity         | Compare vectors                |
+| Retriever          | Perform semantic retrieval     |
+| Main               | Orchestrate the pipeline       |
 
 This separation makes components independently testable and replaceable. For example, the current brute-force retrieval implementation can later be replaced with a vector index (uSearch) without changing the rest of the system.
 
@@ -277,13 +317,13 @@ This project intentionally prioritizes understanding over optimization.
 
 Current limitations include:
 
-* Retrieval operates on entire documents rather than chunks.
-* Document embeddings are regenerated each execution.
-* Retrieval uses brute-force search (`O(N)`).
-* No vector index has been implemented yet.
-* No retrieval evaluation metrics (Recall@K, MRR, Precision, Latency).
+* Current chunking strategy is sentence-based and does not preserve multi-sentence context.
+* Chunk embeddings are regenerated on every execution.
+* Retrieval uses brute-force linear search (O(N)).
+* No persistent vector index has been implemented.
 * No reranking stage.
-* No language model response generation.
+* No automated retrieval evaluation metrics yet.
+* No response generation with an LLM.
 
 These limitations are intentional and will be addressed incrementally throughout future development.
 
@@ -291,7 +331,6 @@ These limitations are intentional and will be addressed incrementally throughout
 
 # Example Output
 
-```text
 ==============================
 Retrieval Results
 ==============================
@@ -300,17 +339,12 @@ Query:
 What is BM25?
 
 Rank 1
-Document: BM25
+Chunk ID: 004-002
+Document ID: 004
 Similarity Score: 0.9412
 
-Rank 2
-Document: Information Retrieval
-Similarity Score: 0.8817
-
-Rank 3
-Document: Hybrid Search
-Similarity Score: 0.8125
-```
+BM25 is a lexical ranking algorithm commonly used
+in information retrieval systems...
 
 ---
 
@@ -357,14 +391,17 @@ python main.py
 
 ## Phase 2 — Retrieval Improvements
 
-* [ ] Document chunking
-* [ ] Chunk embeddings
-* [ ] Persistent vector storage
-* [ ] uSearch vector index
+* [x] Sentence-based chunking
+* [x] Chunk embeddings
+* [x] Chunk-level retrieval
+* [ ] Persistent embedding storage
+* [ ] Vector indexing (uSearch)
 * [ ] Retrieval benchmarking
 * [ ] Recall@K
-* [ ] Mean Reciprocal Rank (MRR)
-* [ ] Latency measurements
+* [ ] Mean Reciprocal Rank
+* [ ] Precision@K
+* [ ] NDCG
+* [ ] Latency measurement
 
 ## Phase 3 — Production-Style RAG
 

@@ -90,7 +90,7 @@ retriever = Retriever(all_chunks)
 # 5. User Query
 # ====================================
 
-user_query = "What is BM25?"
+user_query = "What is RAG pipeline?"
 
 print("\n==============================")
 print("Search Query")
