@@ -6,6 +6,21 @@ Rather than treating RAG as a black box, this project implements each component 
 
 > **Project Status:** Chunk-based semantic retrieval pipeline complete. Retrieval evaluation and generation pipeline under active development.
 
+* Lab 1 — Corpus & Document Loading ✅
+* Lab 2 — Embeddings ✅
+* Lab 3 — Semantic Retrieval ✅
+* Lab 4 — Software Architecture & Refactoring ✅
+* Lab 5 — Chunk-Based Retrieval ✅
+* Lab 6 — Retrieval Evaluation 
+* Lab 7 — Benchmark Dataset
+* Lab 8 — Retrieval Experiments
+* Lab 9 — Persistent Embeddings
+* Lab 10 — Vector Indexing
+* Lab 11 — Hybrid Retrieval
+* Lab 12 — Cross-Encoder Reranking
+* Lab 13 — Prompt Construction
+* Lab 14 — End-to-End RAG
+
 ---
 
 # Motivation
@@ -330,7 +345,7 @@ These limitations are intentional and will be addressed incrementally throughout
 ---
 
 # Example Output
-
+```
 ==============================
 Retrieval Results
 ==============================
@@ -345,7 +360,7 @@ Similarity Score: 0.9412
 
 BM25 is a lexical ranking algorithm commonly used
 in information retrieval systems...
-
+```
 ---
 
 # Installation
@@ -427,7 +442,59 @@ This project has helped me develop a practical understanding of:
 * Retrieval system evaluation
 
 More importantly, it has given me an appreciation for how production retrieval systems are engineered—from the underlying mathematics of vector similarity to the software design decisions that make complex AI systems maintainable and extensible.
+---
+# Experimental Observations
 
+As the retrieval pipeline evolves, I am evaluating its behavior using representative queries to better understand the strengths and limitations of different retrieval strategies. The goal is not only to build a working system, but to measure retrieval quality and use those observations to guide future improvements.
+
+---
+
+## Experiment 1 — Sentence-Based Chunk Retrieval
+
+**Query**
+
+```text
+What is RAG pipeline?
+```
+
+### Top Retrieval Results
+
+| Rank | Chunk | Similarity | Retrieved Text |
+|------|--------|------------|----------------|
+| **1** | 006-006 | **0.6835** | "They are a core infrastructure component in modern RAG systems because they enable scalable semantic search." |
+| **2** | 010-005 | **0.6678** | "RAG systems are widely used in question answering, enterprise search, and knowledge assistants." |
+| **3** | 010-001 | **0.6372** | "Retrieval-Augmented Generation (RAG) is a framework that enhances large language models by retrieving relevant documents before generating a response." |
+
+### Observation
+
+The retriever successfully returned the correct definition of **Retrieval-Augmented Generation (RAG)** within the Top-3 results. However, the defining sentence was ranked **third** instead of first.
+
+From a human perspective, the third result is the most direct answer to the query, while the first two results provide supporting information about RAG systems rather than defining the concept itself.
+
+### Analysis
+
+This experiment highlights an important characteristic of dense embedding retrieval:
+
+- Retrieving relevant information is not the same as ranking it optimally.
+- Embedding similarity measures semantic relatedness, which does not always align with user intent.
+- Sentence-level chunking may remove surrounding context that helps distinguish a definition from supporting details.
+- Retrieval quality should be evaluated independently from retrieval correctness.
+
+Although the ranking was imperfect, the retriever successfully surfaced the correct information, indicating that the retrieval stage is functioning correctly while leaving room for ranking improvements.
+
+### Future Experiments
+
+To improve retrieval quality, future iterations of this project will investigate:
+
+- Paragraph-based chunking
+- Semantic chunking
+- Hybrid retrieval (BM25 + Dense Retrieval)
+- Cross-encoder reranking
+- Retrieval evaluation using Recall@K, Precision@K, MRR, and NDCG
+
+---
+
+This observation serves as the project's first retrieval benchmark and establishes a baseline for comparing future improvements to chunking strategies, embedding models, and ranking algorithms.
 ---
 
 # License
