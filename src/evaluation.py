@@ -11,16 +11,17 @@ benchmark different retrieval strategies.
 
 import numpy as np
 
-
+#==================================================================
+# precision@k
+# Proportion of recommended items in the top-K that are relevant
+#===================================================================
 
 def precision_at_k(
     actual: list[str], 
     predicted: list[str], 
     k: int
 ) -> float:
-    """
-    Proportion of recommended items in the top-K that are relevant.
-    """
+    
     if k <= 0:
         return 0.0
     if not actual: 
@@ -30,16 +31,17 @@ def precision_at_k(
     relevant_retrieved = len(set(top_k_pred) & set(actual))
     return relevant_retrieved / k
 
-
+#==================================================================
+# recall@k
+# Proportion of all relevant items that are captured in top-K
+#===================================================================
 
 def recall_at_k(
     actual: list[str], 
     predicted: list[str], 
     k: int
 ) -> float:
-    """
-    Proportion of all relevant items that are captured in the top-K.
-    """
+    
     if k <= 0:
             return 0.0
     if not actual:
@@ -48,30 +50,32 @@ def recall_at_k(
     relevant_retrieved = len(set(top_k_pred) & set(actual))
     return relevant_retrieved / len(actual)
 
-
+#==================================================================
+# MRR Mean Reciprocal Rank
+# Finds the rank of the *first* relevant item and returns 1/rank.
+#===================================================================
 
 def mean_reciprocal_rank(
     actual: list[str], 
     predicted: list[str]
 ) -> float:
-    """
-    Finds the rank of the *first* relevant item and returns 1/rank.
-    """
+    
     for index, item in enumerate(predicted):
         if item in actual:
             return 1 / (index + 1) 
     return 0.0
 
-
+#==================================================================
+# DCG Discounted Cumulative Gain
+# Using binary relevance (1 if in actual, 0 if not).
+#===================================================================
 
 def dcg_at_k(
     actual: list[str], 
     predicted: list[str], 
     k: int
 ) -> float:
-    """
-    Discounted Cumulative Gain using binary relevance (1 if in actual, 0 if not).
-    """
+    
     top_k_pred = predicted[:k]
     if k <= 0:
         return 0.0
@@ -82,19 +86,20 @@ def dcg_at_k(
             score += 1.0 / np.log2(index + 2)
     return score
 
-
+#==================================================================
+# Normalized Discounted Cumulative Gain
+# Ideal DCG treats the actual relevant items as if they were perfectly 
+# ranked first
+#===================================================================
 
 def ndcg_at_k(
     actual: list[str],
     predicted: list[str], 
     k: int
 ) -> float:
-    """
-    Normalized Discounted Cumulative Gain.
-    """
+    
     dcg = dcg_at_k(actual, predicted, k)
 
-    # Ideal DCG treats the actual relevant items as if they were perfectly ranked first
     ideal_actual = list(actual)[:k]
     idcg = dcg_at_k(actual, ideal_actual, k)
 
@@ -102,17 +107,18 @@ def ndcg_at_k(
         return 0.0
     return dcg / idcg
 
-
+#==================================================================
+# Hit rate at K
+# Binary metric indicating whether at least one relevant item is in the top-K.
+# Returns 1.0 if any relevant item appears in the top-K, 0.0 otherwise.
+#===================================================================
 
 def hit_rate_at_k(
     actual: list[str],
     predicted: list[str],
     k: int    
 ) -> float:
-    """
-    Binary metric indicating whether at least one relevant item is in the top-K.
-    Returns 1.0 if any relevant item appears in the top-K, 0.0 otherwise.
-    """
+    
     if k <= 0:
         return 0.0
     if not actual:

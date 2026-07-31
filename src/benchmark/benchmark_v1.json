@@ -1,0 +1,397 @@
+[
+  {
+    "id": 1,
+    "information_need": "Definition of Information Retrieval (IR)",
+    "description": "The user wants to understand what Information Retrieval is or what the acronym IR stands for.",
+    "queries": [
+      "What is Information Retrieval?",
+      "What is IR?",
+      "Define Information Retrieval.",
+      "What does IR stand for?",
+      "Explain Information Retrieval.",
+      "Can you explain Information Retrieval?",
+      "What is an Information Retrieval system?",
+      "Tell me what Information Retrieval is."
+    ]
+  },
+
+  {
+    "id": 2,
+    "information_need": "Goal of Information Retrieval",
+    "description": "The user wants to understand the primary objective of an Information Retrieval system.",
+    "queries": [
+      "What is the goal of Information Retrieval?",
+      "What does an Information Retrieval system do?",
+      "What is Information Retrieval trying to accomplish?",
+      "What problem does Information Retrieval solve?",
+      "Why do we use Information Retrieval?",
+      "What is the purpose of Information Retrieval?",
+      "What is the objective of an IR system?"
+    ]
+  },
+
+  {
+    "id": 3,
+    "information_need": "How Information Retrieval systems work",
+    "description": "The user wants to understand the high-level workflow of an IR system.",
+    "queries": [
+      "How does Information Retrieval work?",
+      "How does an IR system work?",
+      "How do search engines retrieve documents?",
+      "What is the workflow of an Information Retrieval system?",
+      "How are documents retrieved?",
+      "How does an IR pipeline work?",
+      "Explain how Information Retrieval systems operate."
+    ]
+  },
+
+  {
+    "id": 4,
+    "information_need": "Corpus and user query in Information Retrieval",
+    "description": "The user wants to understand the concepts of a document corpus and user query within an IR system.",
+    "queries": [
+      "What is a document corpus?",
+      "What is a corpus in Information Retrieval?",
+      "What is a query in Information Retrieval?",
+      "What does an IR system take as input?",
+      "What does an IR system return?",
+      "What is the input and output of an Information Retrieval system?",
+      "What is a ranked list of documents?"
+    ]
+  },
+
+  {
+    "id": 5,
+    "information_need": "Lexical retrieval versus semantic retrieval",
+    "description": "The user wants to understand the difference between lexical matching and semantic retrieval.",
+    "queries": [
+      "What is lexical retrieval?",
+      "What is lexical matching?",
+      "What is semantic retrieval?",
+      "What is the difference between lexical and semantic retrieval?",
+      "Keyword search vs semantic search.",
+      "Lexical retrieval versus semantic retrieval.",
+      "How does semantic retrieval differ from keyword matching?",
+      "When should semantic retrieval be used?"
+    ]
+  },
+
+  {
+    "id": 6,
+    "information_need": "Core components of an Information Retrieval system",
+    "description": "The user wants to know the major building blocks of an Information Retrieval system.",
+    "queries": [
+      "What are the components of an Information Retrieval system?",
+      "What are the main parts of an IR system?",
+      "What makes up an Information Retrieval system?",
+      "What components are in a search engine?",
+      "Explain the architecture of an Information Retrieval system.",
+      "What modules are involved in Information Retrieval?",
+      "What are the stages of Information Retrieval?"
+    ]
+  },
+
+  {
+    "id": 7,
+    "information_need": "Evaluation metrics for Information Retrieval",
+    "description": "The user wants to understand how retrieval systems are evaluated.",
+    "queries": [
+      "How do you evaluate an Information Retrieval system?",
+      "How is retrieval quality measured?",
+      "What metrics are used in Information Retrieval?",
+      "What is Precision in Information Retrieval?",
+      "What is Recall in Information Retrieval?",
+      "What is nDCG?",
+      "How do you measure search quality?"
+    ]
+  },
+
+  {
+    "id": 8,
+    "information_need": "Applications of Information Retrieval",
+    "description": "The user wants examples of where Information Retrieval is used.",
+    "queries": [
+      "Where is Information Retrieval used?",
+      "What are the applications of Information Retrieval?",
+      "What systems use Information Retrieval?",
+      "How is Information Retrieval used in industry?",
+      "What is Information Retrieval used for?",
+      "Where do we see Information Retrieval in practice?",
+      "Why is Information Retrieval important?"
+    ]
+  },
+
+  {
+    "id": 9,
+    "information_need": "Relationship between Information Retrieval and RAG",
+    "description": "The user wants to understand how Information Retrieval relates to Retrieval-Augmented Generation systems.",
+    "queries": [
+      "How does Information Retrieval relate to RAG?",
+      "Why is Information Retrieval important for RAG?",
+      "How is Information Retrieval used in Retrieval-Augmented Generation?",
+      "Is RAG an Information Retrieval system?",
+      "How do search systems support RAG?",
+      "What role does Information Retrieval play in RAG?"
+    ]
+  },
+
+  {
+    "id": 10,
+    "information_need": "Definition of embeddings",
+    "description": "The user wants to understand what embeddings are in machine learning and information retrieval.",
+    "queries": [
+      "What are embeddings?",
+      "What is an embedding?",
+      "Define embeddings.",
+      "Explain embeddings.",
+      "What are text embeddings?",
+      "What are vector embeddings?",
+      "Can you explain embeddings?",
+      "What do embeddings represent?"
+    ]
+  },
+
+  {
+    "id": 11,
+    "information_need": "Dense vector representations",
+    "description": "The user wants to understand what it means for embeddings to be dense vector representations.",
+    "queries": [
+      "What is a dense vector?",
+      "What is a dense vector representation?",
+      "Why are embeddings called dense vectors?",
+      "What does dense representation mean?",
+      "What is a high-dimensional vector?",
+      "How are embeddings represented?",
+      "What does a dense embedding look like?"
+    ]
+  },
+
+  {
+    "id": 12,
+    "information_need": "Semantic meaning in embedding space",
+    "description": "The user wants to understand how embeddings capture semantic meaning rather than exact words.",
+    "queries": [
+      "How do embeddings capture meaning?",
+      "What is semantic similarity?",
+      "How do embeddings represent semantic meaning?",
+      "Why do embeddings understand meaning?",
+      "How do embeddings encode meaning?",
+      "How do embedding models understand language?",
+      "What makes embeddings semantic?"
+    ]
+  },
+
+  {
+    "id": 13,
+    "information_need": "Similarity in vector space",
+    "description": "The user wants to understand why semantically similar text appears close together in vector space.",
+    "queries": [
+      "Why are similar embeddings close together?",
+      "How is similarity measured in embedding space?",
+      "What is vector space?",
+      "What is embedding space?",
+      "Why are similar meanings close in vector space?",
+      "How do embeddings measure similarity?",
+      "How do vectors represent similarity?"
+    ]
+  },
+
+  {
+    "id": 14,
+    "information_need": "Cosine similarity and embeddings",
+    "description": "The user wants to understand how cosine similarity is used to compare embeddings.",
+    "queries": [
+      "How are embeddings compared?",
+      "How does cosine similarity work with embeddings?",
+      "Why is cosine similarity used for embeddings?",
+      "How do you compare embedding vectors?",
+      "How do search systems compare embeddings?",
+      "How are embedding similarities calculated?",
+      "What metric is used to compare embeddings?"
+    ]
+  },
+
+  {
+    "id": 15,
+    "information_need": "Semantic similarity example",
+    "description": "The user wants to understand why words with similar meanings have similar embeddings.",
+    "queries": [
+      "Why are 'car' and 'automobile' similar embeddings?",
+      "Can embeddings recognize synonyms?",
+      "Do embeddings understand synonyms?",
+      "Can embeddings match different words with the same meaning?",
+      "How do embeddings recognize similar words?",
+      "Why don't embeddings require exact keyword matches?"
+    ]
+  },
+
+  {
+    "id": 16,
+    "information_need": "Training embedding models",
+    "description": "The user wants to understand how embedding models are trained.",
+    "queries": [
+      "How are embedding models trained?",
+      "How do embeddings learn meaning?",
+      "Where do embeddings come from?",
+      "How are text embeddings generated?",
+      "What data are embedding models trained on?",
+      "How do neural networks create embeddings?",
+      "How do embedding models learn semantic relationships?"
+    ]
+  },
+
+  {
+    "id": 17,
+    "information_need": "Applications of embeddings",
+    "description": "The user wants examples of where embeddings are used.",
+    "queries": [
+      "What are embeddings used for?",
+      "Where are embeddings used?",
+      "What applications use embeddings?",
+      "How are embeddings used in machine learning?",
+      "How are embeddings used in search?",
+      "Why are embeddings useful?",
+      "What problems do embeddings solve?"
+    ]
+  },
+
+  {
+    "id": 18,
+    "information_need": "Embeddings in RAG",
+    "description": "The user wants to understand the role of embeddings in Retrieval-Augmented Generation systems.",
+    "queries": [
+      "How are embeddings used in RAG?",
+      "Why does RAG use embeddings?",
+      "What role do embeddings play in RAG?",
+      "How does RAG retrieve documents using embeddings?",
+      "Why are embeddings important for Retrieval-Augmented Generation?",
+      "How are queries compared to documents in RAG?",
+      "How does semantic search work in RAG?"
+    ]
+  },
+
+  {
+    "id": 19,
+    "information_need": "Definition of cosine similarity",
+    "description": "The user wants to understand what cosine similarity is and what it measures.",
+    "queries": [
+      "What is cosine similarity?",
+      "Define cosine similarity.",
+      "Explain cosine similarity.",
+      "What does cosine similarity measure?",
+      "Can you explain cosine similarity?",
+      "How would you define cosine similarity?",
+      "What is the purpose of cosine similarity?",
+      "What is cosine similarity used for?"
+    ]
+  },
+
+  {
+    "id": 20,
+    "information_need": "Cosine similarity between vectors",
+    "description": "The user wants to understand how cosine similarity compares vectors mathematically.",
+    "queries": [
+      "How does cosine similarity compare vectors?",
+      "How is cosine similarity calculated?",
+      "How do you measure similarity between vectors?",
+      "What does cosine similarity compute?",
+      "How does cosine similarity work mathematically?",
+      "How are vectors compared using cosine similarity?",
+      "How does cosine similarity determine similarity?"
+    ]
+  },
+
+  {
+    "id": 21,
+    "information_need": "Cosine similarity formula",
+    "description": "The user wants to understand the mathematical formula used to compute cosine similarity.",
+    "queries": [
+      "What is the cosine similarity formula?",
+      "Show me the cosine similarity equation.",
+      "How is cosine similarity calculated mathematically?",
+      "What is the equation for cosine similarity?",
+      "How do you compute cosine similarity?",
+      "What variables are used in cosine similarity?",
+      "How is the dot product used in cosine similarity?"
+    ]
+  },
+
+  {
+    "id": 22,
+    "information_need": "Meaning of cosine similarity scores",
+    "description": "The user wants to interpret cosine similarity values between -1 and 1.",
+    "queries": [
+      "What does a cosine similarity of 1 mean?",
+      "What does cosine similarity equal to 0 mean?",
+      "What does a cosine similarity of -1 mean?",
+      "How do you interpret cosine similarity scores?",
+      "What is the range of cosine similarity?",
+      "Why does cosine similarity range from -1 to 1?",
+      "What do cosine similarity values represent?"
+    ]
+  },
+
+  {
+    "id": 23,
+    "information_need": "Why cosine similarity is used for embeddings",
+    "description": "The user wants to understand why cosine similarity is commonly used to compare embedding vectors.",
+    "queries": [
+      "Why is cosine similarity used for embeddings?",
+      "Why do embedding models use cosine similarity?",
+      "Why is cosine similarity good for semantic search?",
+      "Why is cosine similarity preferred for embeddings?",
+      "Why don't we use Euclidean distance instead?",
+      "Why is cosine similarity common in retrieval systems?",
+      "Why is cosine similarity important in RAG?"
+    ]
+  },
+
+  {
+    "id": 24,
+    "information_need": "Direction versus magnitude",
+    "description": "The user wants to understand why cosine similarity focuses on vector direction rather than vector magnitude.",
+    "queries": [
+      "Why does cosine similarity ignore magnitude?",
+      "Why does cosine similarity focus on direction?",
+      "What is the difference between vector direction and magnitude?",
+      "Why is direction more important than magnitude?",
+      "How does cosine similarity compare vector direction?",
+      "What does direction mean in cosine similarity?"
+    ]
+  },
+
+  {
+    "id": 25,
+    "information_need": "Cosine similarity in text retrieval",
+    "description": "The user wants to understand how cosine similarity is applied in information retrieval and semantic search.",
+    "queries": [
+      "How is cosine similarity used in search?",
+      "How is cosine similarity used in Information Retrieval?",
+      "How do search engines use cosine similarity?",
+      "How is cosine similarity used in semantic search?",
+      "What role does cosine similarity play in retrieval?",
+      "How does cosine similarity help retrieve documents?",
+      "How does cosine similarity rank documents?"
+    ]
+  },
+
+  {
+    "id": 26,
+    "information_need": "Cosine similarity in nearest neighbor search",
+    "description": "The user wants to understand the relationship between cosine similarity, nearest neighbor search, and vector databases.",
+    "queries": [
+      "How is cosine similarity used in nearest neighbor search?",
+      "What role does cosine similarity play in ANN search?",
+      "How do vector databases use cosine similarity?",
+      "How does cosine similarity find nearest neighbors?",
+      "Why is cosine similarity used in vector search?",
+      "How does cosine similarity retrieve similar vectors?",
+      "How are embedding databases searched?"
+    ]
+  },
+
+  
+
+
+
+]

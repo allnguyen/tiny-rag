@@ -78,7 +78,6 @@ for chunk in all_chunks:
 
 print(f"Embedded {len(all_chunks)} chunks.")
 
-
 # ====================================
 # 4. Initialize Retriever
 # ====================================
