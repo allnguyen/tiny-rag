@@ -390,8 +390,444 @@
     ]
   },
 
+   {
+    "id": 27,
+    "information_need": "Definition of BM25",
+    "description": "The user wants to understand what BM25 is.",
+    "queries": [
+      "What is BM25?",
+      "Define BM25.",
+      "Explain BM25.",
+      "What does BM25 do?",
+      "What is the BM25 algorithm?",
+      "Can you explain BM25?",
+      "What is BM25 used for?",
+      "What does BM25 stand for?"
+    ]
+  },
+
+  {
+    "id": 28,
+    "information_need": "BM25 as a lexical retrieval algorithm",
+    "description": "The user wants to understand how BM25 performs keyword-based retrieval.",
+    "queries": [
+      "How does BM25 work?",
+      "Is BM25 lexical retrieval?",
+      "How does BM25 retrieve documents?",
+      "How does BM25 search documents?",
+      "How does BM25 perform keyword search?",
+      "How does BM25 rank search results?",
+      "How do search engines use BM25?"
+    ]
+  },
+
+  {
+    "id": 29,
+    "information_need": "Relationship between BM25 and TF-IDF",
+    "description": "The user wants to understand how BM25 compares to TF-IDF.",
+    "queries": [
+      "How is BM25 different from TF-IDF?",
+      "BM25 vs TF-IDF.",
+      "Why is BM25 better than TF-IDF?",
+      "Does BM25 improve upon TF-IDF?",
+      "What is the relationship between BM25 and TF-IDF?",
+      "Should I use BM25 or TF-IDF?"
+    ]
+  },
+
+  {
+    "id": 30,
+    "information_need": "BM25 scoring factors",
+    "description": "The user wants to understand how BM25 computes relevance scores.",
+    "queries": [
+      "How does BM25 score documents?",
+      "How is BM25 calculated?",
+      "What factors affect BM25 scores?",
+      "What is term frequency in BM25?",
+      "What is inverse document frequency?",
+      "Why does BM25 normalize document length?",
+      "What determines a BM25 score?"
+    ]
+  },
+
+  {
+    "id": 31,
+    "information_need": "Diminishing returns in BM25",
+    "description": "The user wants to understand why repeated keywords eventually have less impact on BM25 scores.",
+    "queries": [
+      "What are diminishing returns in BM25?",
+      "Why doesn't repeating keywords keep increasing BM25?",
+      "How does BM25 handle repeated terms?",
+      "Why does BM25 saturate term frequency?",
+      "Why are repeated keywords less important in BM25?",
+      "What does BM25 mean by diminishing returns?"
+    ]
+  },
+
+  {
+    "id": 32,
+    "information_need": "Strengths and weaknesses of BM25",
+    "description": "The user wants to understand when BM25 performs well and where it struggles.",
+    "queries": [
+      "When is BM25 good?",
+      "What are the strengths of BM25?",
+      "What are the weaknesses of BM25?",
+      "Can BM25 understand meaning?",
+      "Does BM25 understand paraphrases?",
+      "Why does BM25 struggle with semantic search?",
+      "When should BM25 be used?"
+    ]
+  },
+
+  {
+    "id": 33,
+    "information_need": "BM25 in hybrid search",
+    "description": "The user wants to understand why BM25 is still used in modern retrieval systems.",
+    "queries": [
+      "Why is BM25 used in hybrid search?",
+      "Is BM25 still used today?",
+      "Why do modern search engines still use BM25?",
+      "Why combine BM25 with embeddings?",
+      "What role does BM25 play in RAG?",
+      "Why is BM25 important in production search systems?"
+    ]
+  },
+
+  {
+    "id": 34,
+    "information_need": "Definition of dense retrieval",
+    "description": "The user wants to understand what dense retrieval is.",
+    "queries": [
+      "What is dense retrieval?",
+      "Define dense retrieval.",
+      "Explain dense retrieval.",
+      "What is embedding-based retrieval?",
+      "What does dense retrieval mean?",
+      "Can you explain dense retrieval?",
+      "How does dense retrieval work?"
+    ]
+  },
+
+  {
+    "id": 35,
+    "information_need": "Embeddings in dense retrieval",
+    "description": "The user wants to understand how embeddings are used during dense retrieval.",
+    "queries": [
+      "How does dense retrieval use embeddings?",
+      "How are queries embedded?",
+      "How are documents embedded?",
+      "How are embeddings used for retrieval?",
+      "Why are embeddings important for dense retrieval?",
+      "How does dense retrieval compare vectors?"
+    ]
+  },
+
+  {
+    "id": 36,
+    "information_need": "Nearest neighbor search in dense retrieval",
+    "description": "The user wants to understand how dense retrieval finds similar documents.",
+    "queries": [
+      "How does dense retrieval find documents?",
+      "What is nearest neighbor search?",
+      "How does dense retrieval retrieve similar vectors?",
+      "How are nearest neighbors found?",
+      "How does vector search work?",
+      "How does embedding search work?"
+    ]
+  },
+
+  {
+    "id": 37,
+    "information_need": "Dense retrieval versus BM25",
+    "description": "The user wants to compare dense retrieval with lexical retrieval methods.",
+    "queries": [
+      "Dense retrieval vs BM25.",
+      "How is dense retrieval different from BM25?",
+      "Which is better, dense retrieval or BM25?",
+      "Keyword search vs dense retrieval.",
+      "Semantic search vs BM25.",
+      "How do dense retrieval and lexical retrieval differ?"
+    ]
+  },
+
+  {
+    "id": 38,
+    "information_need": "Training dense retrieval models",
+    "description": "The user wants to understand how dense retrieval systems are trained.",
+    "queries": [
+      "How are dense retrieval models trained?",
+      "How does dense retrieval learn semantic similarity?",
+      "How are embedding retrieval models built?",
+      "How are dense retrievers trained?",
+      "What models power dense retrieval?"
+    ]
+  },
+
+  {
+    "id": 39,
+    "information_need": "Strengths and weaknesses of dense retrieval",
+    "description": "The user wants to understand the advantages and limitations of dense retrieval.",
+    "queries": [
+      "What are the strengths of dense retrieval?",
+      "What are the weaknesses of dense retrieval?",
+      "When should dense retrieval be used?",
+      "Why is dense retrieval better for paraphrases?",
+      "Can dense retrieval miss exact keywords?",
+      "What are the limitations of dense retrieval?"
+    ]
+  },
+
+  {
+    "id": 40,
+    "information_need": "Definition of vector databases",
+    "description": "The user wants to understand what a vector database is.",
+    "queries": [
+      "What is a vector database?",
+      "Define vector database.",
+      "Explain vector databases.",
+      "What are vector databases?",
+      "What does a vector database do?",
+      "Why do we need vector databases?",
+      "Can you explain vector databases?"
+    ]
+  },
+
+  {
+    "id": 41,
+    "information_need": "Approximate nearest neighbor search",
+    "description": "The user wants to understand what ANN search is and why vector databases use it.",
+    "queries": [
+      "What is approximate nearest neighbor search?",
+      "What is ANN search?",
+      "How does ANN search work?",
+      "Why do vector databases use ANN?",
+      "What is approximate nearest neighbor retrieval?",
+      "How are nearest neighbors found quickly?"
+    ]
+  },
+
+  {
+    "id": 42,
+    "information_need": "Examples of vector databases",
+    "description": "The user wants examples of popular vector databases.",
+    "queries": [
+      "What are some vector databases?",
+      "Examples of vector databases.",
+      "What is FAISS?",
+      "What is Chroma?",
+      "What is Pinecone?",
+      "What is Weaviate?",
+      "Popular vector databases."
+    ]
+  },
+
+  {
+    "id": 43,
+    "information_need": "Metadata stored in vector databases",
+    "description": "The user wants to understand what information is stored alongside embeddings.",
+    "queries": [
+      "What metadata do vector databases store?",
+      "What is stored in a vector database?",
+      "Do vector databases store document IDs?",
+      "Can vector databases store source text?",
+      "What information accompanies embeddings?"
+    ]
+  },
+
+  {
+    "id": 44,
+    "information_need": "Vector indexing algorithms",
+    "description": "The user wants to understand how vector databases index embeddings efficiently.",
+    "queries": [
+      "What is HNSW?",
+      "What is IVF indexing?",
+      "How do vector databases index vectors?",
+      "How are embeddings indexed?",
+      "What indexing algorithms do vector databases use?",
+      "How do vector databases make search fast?"
+    ]
+  },
+
+  {
+    "id": 45,
+    "information_need": "Role of vector databases in RAG",
+    "description": "The user wants to understand why vector databases are important for Retrieval-Augmented Generation.",
+    "queries": [
+      "Why are vector databases used in RAG?",
+      "How do vector databases help RAG?",
+      "What role do vector databases play in Retrieval-Augmented Generation?",
+      "Why does RAG need a vector database?",
+      "How are vector databases used for semantic search?",
+      "How do vector databases enable scalable retrieval?"
+    ]
+  },
+
+  {
+    "id": 46,
+    "information_need": "Definition of chunking",
+    "description": "The user wants to understand what chunking is in retrieval systems.",
+    "queries": [
+      "What is chunking?",
+      "Define chunking.",
+      "Explain chunking.",
+      "What does chunking mean in RAG?",
+      "What is document chunking?",
+      "Can you explain chunking?",
+      "What is text chunking?"
+    ]
+  },
+
+  {
+    "id": 47,
+    "information_need": "Why chunking is necessary",
+    "description": "The user wants to understand why documents are split before generating embeddings.",
+    "queries": [
+      "Why do we use chunking?",
+      "Why is chunking necessary?",
+      "Why split documents into chunks?",
+      "Why can't we embed an entire document?",
+      "Why does RAG use chunking?",
+      "What problem does chunking solve?",
+      "Why are documents divided before embedding?"
+    ]
+  },
+
+  {
+    "id": 48,
+    "information_need": "Chunking strategies",
+    "description": "The user wants to understand different approaches for splitting documents.",
+    "queries": [
+      "What are the different chunking strategies?",
+      "What chunking methods are there?",
+      "What is fixed-size chunking?",
+      "What is sentence-based chunking?",
+      "What is structure-aware chunking?",
+      "How can documents be chunked?",
+      "What are common chunking techniques?"
+    ]
+  },
+
+  {
+    "id": 49,
+    "information_need": "Chunk size trade-offs",
+    "description": "The user wants to understand how chunk size affects retrieval quality.",
+    "queries": [
+      "Why does chunk size matter?",
+      "How does chunk size affect retrieval?",
+      "What happens if chunks are too small?",
+      "What happens if chunks are too large?",
+      "How should I choose a chunk size?",
+      "What are the trade-offs of chunk size?",
+      "Does chunk size affect RAG performance?"
+    ]
+  },
+  {
+    "id": 50,
+    "information_need": "Chunk overlap",
+    "description": "The user wants to understand why overlapping chunks are used.",
+    "queries": [
+      "What is chunk overlap?",
+      "Why use overlapping chunks?",
+      "Why do chunks overlap?",
+      "How does chunk overlap improve retrieval?",
+      "Should chunks overlap?",
+      "What are overlapping chunks?",
+      "Why is overlap important?"
+    ]
+  },
+
+  {
+    "id": 51,
+    "information_need": "Importance of chunking in RAG",
+    "description": "The user wants to understand why chunking is considered a critical design decision.",
+    "queries": [
+      "Why is chunking important in RAG?",
+      "How does chunking affect retrieval performance?",
+      "Does chunking impact RAG quality?",
+      "Why is chunking a critical design decision?",
+      "How important is chunking?",
+      "Can bad chunking hurt retrieval?",
+      "Why does chunking influence downstream performance?"
+    ]
+  },
+
+  {
+    "id": 62,
+    "information_need": "Definition of Retrieval-Augmented Generation (RAG)",
+    "description": "The user wants to understand what Retrieval-Augmented Generation (RAG) is.",
+    "queries": [
+      "What is RAG?",
+      "What is Retrieval-Augmented Generation?",
+      "Define RAG.",
+      "Explain RAG.",
+      "What does RAG stand for?",
+      "Can you explain Retrieval-Augmented Generation?",
+      "What is a RAG system?",
+      "What is the purpose of RAG?"
+    ]
+  },
+
+  {
+    "id": 63,
+    "information_need": "RAG pipeline workflow",
+    "description": "The user wants to understand the high-level stages of a Retrieval-Augmented Generation pipeline.",
+    "queries": [
+      "How does a RAG pipeline work?",
+      "What are the steps of a RAG pipeline?",
+      "What does the RAG pipeline consist of?",
+      "Explain the RAG pipeline.",
+      "How does Retrieval-Augmented Generation work?",
+      "What happens inside a RAG system?",
+      "What are the stages of a RAG system?"
+    ]
+  },
+
+  {
+    "id": 64,
+    "information_need": "Why RAG reduces hallucinations",
+    "description": "The user wants to understand how Retrieval-Augmented Generation improves factual accuracy.",
+    "queries": [
+      "Why does RAG reduce hallucinations?",
+      "How does RAG reduce hallucinations?",
+      "How does RAG improve accuracy?",
+      "Why is RAG more reliable than a standalone LLM?",
+      "How does external knowledge reduce hallucinations?",
+      "Why is grounding important in RAG?",
+      "How does RAG ground model responses?"
+    ]
+  },
+
+  {
+    "id": 65,
+    "information_need": "Factors affecting RAG quality",
+    "description": "The user wants to understand what determines the quality of a RAG system.",
+    "queries": [
+      "What determines RAG performance?",
+      "What affects RAG quality?",
+      "Why is retrieval quality important in RAG?",
+      "What makes a good RAG system?",
+      "How do embeddings affect RAG?",
+      "How does chunking affect RAG?",
+      "How does ranking affect RAG performance?",
+      "What components influence retrieval quality?"
+    ]
+  },
+
+  {
+    "id": 66,
+    "information_need": "Applications of RAG",
+    "description": "The user wants examples of where Retrieval-Augmented Generation is used.",
+    "queries": [
+      "What is RAG used for?",
+      "Where is RAG used?",
+      "What are applications of RAG?",
+      "What problems does RAG solve?",
+      "How is RAG used in industry?",
+      "What are real-world uses of Retrieval-Augmented Generation?",
+      "What kinds of systems use RAG?"
+    ]
+  }
+]
+
   
 
-
-
-]
