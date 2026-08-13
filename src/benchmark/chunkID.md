@@ -1,5 +1,12 @@
-Total chunks created: 61
 
+Total chunks created: 61
+000-001: Food is any solid or liquid substance that living things eat or drink to get energy, grow, and stay alive. 
+000-002: All living animals and humans eat food to get energy, grow, and survive.
+000-003: All food comes from nature, primarily through plants that use sunlight, water, and soil to grow, or through animals that eat plants and other animals. 
+000-004: Food can be found at local grocery stores, restaurants, or through community assistance programs depending on your needs. 
+000-005: The invention of cooking (preparing and heating food) began roughly 1.8 to 2.5 million years ago when early human ancestors first used fire. 
+000-006: Food is consumed consistently throughout the day, traditionally at breakfast time, lunch time, and dinner time. 
+000-007: Living things need food because it provides fuel and building blocks to stay alive, grow, and move. 
 001-001: Information Retrieval (IR) is the field of designing systems that find relevant information from a large collection of documents in response to a user query
 001-002: The goal is not just to store data, but to rank and retrieve the most relevant content efficiently
 001-003: IR systems typically operate over a corpus of documents and take a user query as input
@@ -9,7 +16,7 @@ Total chunks created: 61
 001-007: IR is foundational to search engines, recommendation systems, and modern retrieval-augmented generation (RAG) systems
 002-001: Embeddings are dense vector representations of text where semantic meaning is encoded in a continuous numerical space
 002-002: Each piece of text is mapped to a high-dimensional vector, typically produced by neural networks
-002-003: The key idea is that semantically similar texts are close together in vector space, measured using similarity metrics such as cosine similarity
+002-003: The key idea is that semantically similar texts are close together in vector space, measured using similarity metrics such as Cosine Similarity, Euclidean Distance (L2 Distance), Dot product, Manhattan Distance (L1 Distance), or other specialized metrics.
 002-004: For example, “car” and “automobile” would have similar embeddings even if they share no exact words
 002-005: Embedding models are trained on large corpora using objectives that encourage semantic similarity to be reflected geometrically
 002-006: Embeddings are used in search, clustering, classification, and retrieval systems

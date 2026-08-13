@@ -1,6 +1,6 @@
 Embeddings are dense vector representations of text where semantic meaning is encoded in a continuous numerical space. Each piece of text is mapped to a high-dimensional vector, typically produced by neural networks.
 
-The key idea is that semantically similar texts are close together in vector space, measured using similarity metrics such as cosine similarity.
+The key idea is that semantically similar texts are close together in vector space, measured using similarity metrics such as Cosine Similarity, Euclidean Distance (L2 Distance), Dot product, Manhattan Distance (L1 Distance), or other specialized metrics.
 
 For example, “car” and “automobile” would have similar embeddings even if they share no exact words.
 
