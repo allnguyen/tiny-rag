@@ -132,13 +132,3 @@ def hit_rate_at_k(
     return 0.0
    
 
-actual = ["010-001"]   
-predicted = [
-    "006-006",
-    "010-005",
-    "010-001",
-]
-
-k = 3
-
-print(precision_at_k(actual, predicted, k))

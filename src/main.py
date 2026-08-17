@@ -9,9 +9,8 @@ Pipeline:
 2. Split documents into retrievable chunks
 3. Generate embeddings for each chunk
 4. Initialize semantic retriever
-5. Generate embedding for user query
-6. Retrieve most relevant chunks
-7. Display retrieval results
+5. Retrieve most relevant chunks
+6. Display retrieval results
 """
 
 from config import DOCUMENTS_PATH
@@ -82,7 +81,10 @@ print(f"Embedded {len(all_chunks)} chunks.")
 # 4. Initialize Retriever
 # ====================================
 
-retriever = Retriever(all_chunks)
+retriever = Retriever(
+    all_chunks,
+    generator
+)
 
 
 # ====================================
@@ -98,32 +100,19 @@ print("==============================")
 print(user_query)
 
 
-# ====================================
-# 6. Generate query embedding
-# ====================================
-
-query_embedding = generator.generate(
-    user_query
-)
-
-
-print("\nQuery embedding generated.")
-print(f"Dimensions: {len(query_embedding)}")
-print(f"First 5 values: {query_embedding[:5]}")
-
 
 # ====================================
-# 7. Retrieve relevant chunks
+# 6. Retrieve relevant chunks
 # ====================================
 
 results = retriever.search(
-    query_embedding,
+    user_query,
     top_k=3,
 )
 
 
 # ====================================
-# 8. Display results
+# 7. Display results
 # ====================================
 
 print("\n==============================")
