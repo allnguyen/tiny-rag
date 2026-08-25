@@ -271,6 +271,25 @@ The retriever assumes embeddings already exist and does not generate them.
 
 ---
 
+### Evaluation/Evaluator
+
+Runs every benchmark query and returns one result record per query. 
+
+Responsibilities:
+
+* Precision@K
+
+* Recall@K
+
+* Mean Reciprocal Rank (MRR)
+
+* DCG
+
+* nDCG@K
+
+* Hit Rate@K
+---
+
 ## Main
 
 Coordinates the complete retrieval pipeline.

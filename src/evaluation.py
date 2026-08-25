@@ -28,7 +28,9 @@ def precision_at_k(
         return 0.0
     
     top_k_pred = predicted[:k]
-    relevant_retrieved = len(set(top_k_pred) & set(actual))
+    relevant_retrieved = len(
+        set(top_k_pred) & set(actual)
+    )
     return relevant_retrieved / k
 
 #==================================================================

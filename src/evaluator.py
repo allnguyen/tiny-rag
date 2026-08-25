@@ -1,6 +1,26 @@
 """
 evaluator.py
 
+Runs the benchmark against a retrieval system and produces
+query-level evaluation results.
+
+Responsibilities:
+    - Iterate through every benchmark entry
+    - Run every benchmark query through the retrieval system
+    - Extract predicted chunk IDs
+    - Compare predictions against labeled relevant chunks
+    - Calculate retrieval metrics
+    - Return one result record per query
+
+This module does NOT:
+    - Load documents
+    - Generate chunk embeddings
+    - Generate query embeddings directly
+    - Perform retrieval itself
+    - Aggregate results into a report
+
+The retrieval system is intentionally passed in so that different
+retrieval strategies can be evaluated using the same benchmark.
 """
 from evaluation import (
     precision_at_k,
@@ -11,30 +31,67 @@ from evaluation import (
 )
 
 
-def evaluate(retrieval_system, benchmark, k):
+def evaluate(
+    retrieval_system, 
+    benchmark: list[dict], 
+    k: int = 3,
+) -> list[dict]:
+    """
+    Run every benchmark query through the retrieval system
+    and calculate retrieval metrics.
+
+    Args:
+        retrieval_system:
+            Retrieval system implementing:
+
+                search(query, top_k)
+
+        benchmark:
+            Loaded TinyRAG Benchmark v1 data.
+
+        k:
+            Number of chunks to retrieve and evaluate.
+
+    Returns:
+        A list containing one result dictionary per benchmark query.
+    """
 
     results = []
 
+    # ================================================================
+    # Run every benchmark entry
+    # ================================================================
+
     for entry in benchmark:
 
-        # Ground-truth relevant chunks for this information need
+        benchmark_id = entry["id"]
+        information_need = entry["information_need"]
         actual = entry["relevant_chunks"]
 
         for query in entry["queries"]:
 
-            # Run the benchmark query through the retrieval system
+            # --------------------------------------------------------
+            # 1. Retrieve top-K chunks
+            # --------------------------------------------------------
+
             retrieved = retrieval_system.search(
                 query,
-                top_k=k
+                top_k=k,
             )
 
-            # Extract ranked chunk IDs from retrieval result
+            # --------------------------------------------------------
+            # 2. Extract predicted chunk IDs
+            # --------------------------------------------------------
+
             predicted = [
                 chunk.id 
                 for chunk, score in retrieved
             ]
      
-            # Calculate metrics
+            # --------------------------------------------------------
+            # 3. Calculate evaluation metrics
+            # --------------------------------------------------------
+            
             precision = precision_at_k(
                 actual,
                 predicted,
@@ -65,11 +122,9 @@ def evaluate(retrieval_system, benchmark, k):
             )
 
             # Store query-level evaluation results
-
-
-
             results.append({
-                "benchmark_id": entry["id"],
+                "benchmark_id": benchmark_id,
+                "information_need": entry["information_need"],
                 "query": query,
                 "actual": actual,
                 "predicted": predicted,

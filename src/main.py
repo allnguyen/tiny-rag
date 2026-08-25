@@ -17,7 +17,7 @@ from config import DOCUMENTS_PATH
 from loader import loader_function
 from chunker import Chunker
 from embedding import EmbeddingGenerator
-from retriever import Retriever
+from pipeline import build_retrieval_system
 
 
 # ====================================
@@ -62,7 +62,7 @@ print(f"Total chunks created: {len(all_chunks)}")
 # 3. Generate chunk embeddings
 # ====================================
 
-generator = EmbeddingGenerator()
+embedding_generator = EmbeddingGenerator()
 
 print("\n==============================")
 print("Generating Chunk Embeddings")
@@ -70,7 +70,7 @@ print("==============================")
 
 
 for chunk in all_chunks:
-    chunk.embedding = generator.generate(
+    chunk.embedding = embedding_generator.generate(
         chunk.text
     )
 
@@ -81,17 +81,14 @@ print(f"Embedded {len(all_chunks)} chunks.")
 # 4. Initialize Retriever
 # ====================================
 
-retriever = Retriever(
-    all_chunks,
-    generator
-)
+retrieval_system = build_retrieval_system()
 
 
 # ====================================
 # 5. User Query
 # ====================================
 
-user_query = "What is RAG pipeline?"
+user_query = input("\nEnter your query: ")
 
 print("\n==============================")
 print("Search Query")
@@ -105,7 +102,7 @@ print(user_query)
 # 6. Retrieve relevant chunks
 # ====================================
 
-results = retriever.search(
+results = retrieval_system.search(
     user_query,
     top_k=3,
 )
