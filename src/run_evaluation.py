@@ -1,10 +1,14 @@
+"""
+run_evaluation.py
+
+Entry point for running TinyRAG Benchmark v1.
+"""
+
 import json
 
+from pipeline import build_retrieval_system
 from evaluator import evaluate
 from report import generate_report
-
-# Import whatever you currently use to construct
-# your documents, chunks, embeddings, and retriever.
 
 
 # ============================================================
@@ -16,17 +20,15 @@ with open(
     "r",
     encoding="utf-8",
 ) as file:
+    
     benchmark = json.load(file)
 
 
 # ============================================================
-# Initialize retrieval system
+# Build retrieval system
 # ============================================================
 
-retrieval_system = Retriever(
-    chunks,
-    embedding_generator,
-)
+retrieval_system = build_retrieval_system()
 
 
 # ============================================================

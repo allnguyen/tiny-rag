@@ -95,36 +95,36 @@ def evaluate(
             precision = precision_at_k(
                 actual,
                 predicted,
-                k
+                k,
             )
 
             recall = recall_at_k(
                 actual,
                 predicted,
-                k
+                k,
             )
 
             mrr = mean_reciprocal_rank(
                 actual,
-                predicted
+                predicted,
             )
 
             ndcg = ndcg_at_k(
                 actual,
                 predicted,
-                k
+                k,
             )
 
             hit_rate = hit_rate_at_k(
                 actual,
                 predicted,
-                k
+                k,
             )
 
             # Store query-level evaluation results
             results.append({
                 "benchmark_id": benchmark_id,
-                "information_need": entry["information_need"],
+                "information_need": information_need,
                 "query": query,
                 "actual": actual,
                 "predicted": predicted,

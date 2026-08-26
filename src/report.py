@@ -1,4 +1,3 @@
-# Load benchmark_v1.json
 """
 report.py
 
@@ -132,8 +131,6 @@ def query_failures(
         return pd.DataFrame()
 
     failures = df[
-        (df["recall"] == 0)
-        |
         (df["hit_rate"] == 0)
     ].copy()
 

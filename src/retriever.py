@@ -47,6 +47,7 @@ class Retriever:
         Retrieve the top-k chunks most similar to a text query.
 
         Args:
+        
             query: User's text query
             top_k: Maximum number of results to return.
 
