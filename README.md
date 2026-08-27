@@ -1,521 +1,372 @@
-# Tiny RAG — Building a Retrieval System from First Principles
+TinyRAG
 
-A lightweight Retrieval-Augmented Generation (RAG) learning project focused on understanding the core mechanics of modern information retrieval systems without relying on high-level frameworks such as LangChain or LlamaIndex.
+TinyRAG is a small Retrieval-Augmented Generation (RAG) learning system
+built from first principles.
 
-Rather than treating RAG as a black box, this project implements each component individually to understand how semantic search works under the hood—from loading documents and generating embeddings to retrieving relevant information using vector similarity.
+The goal is to understand retrieval systems by implementing their core
+mechanics directly, measuring their behavior, and then comparing
+retrieval strategies.
 
-> **Project Status:** Chunk-based semantic retrieval pipeline complete. Retrieval evaluation and generation pipeline under active development.
+Current objective
 
-* Lab 1 — Corpus & Document Loading ✅
-* Lab 2 — Embeddings ✅
-* Lab 3 — Semantic Retrieval ✅
-* Lab 4 — Software Architecture & Refactoring ✅
-* Lab 5 — Chunk-Based Retrieval ✅
-* Lab 6 — Retrieval Evaluation 
-* Lab 7 — Benchmark Dataset
-* Lab 8 — Retrieval Experiments
-* Lab 9 — Persistent Embeddings
-* Lab 10 — Vector Indexing
-* Lab 11 — Hybrid Retrieval
-* Lab 12 — Cross-Encoder Reranking
-* Lab 13 — Prompt Construction
-* Lab 14 — End-to-End RAG
+The current phase is retrieval evaluation.
 
----
+The project now has a corpus, chunking, embeddings, a dense retriever, a
+labeled Benchmark v1, retrieval metrics, an evaluator, and a reporting
+layer. The immediate goal is to connect these pieces into one reliable
+end-to-end evaluation pipeline.
 
-# Motivation
+Current architecture
 
-Modern AI applications increasingly rely on Retrieval-Augmented Generation (RAG) to provide accurate, grounded responses from external knowledge sources. While many tutorials use frameworks that abstract away the underlying retrieval process, this project focuses on implementing the retrieval system from scratch.
-
-The objectives are to:
-
-* Understand dense semantic retrieval from first principles.
-* Learn how embeddings represent natural language.
-* Build modular software components using sound software engineering principles.
-* Gain practical experience with the architecture behind production RAG systems.
-
----
-
-# Current Features
-
-## Implemented
-
-* ✅ Load a corpus of text documents
-* ✅ Represent documents using structured data classes
-* ✅ Generate dense embeddings locally with Ollama
-* ✅ Compute cosine similarity between embeddings
-* ✅ Perform semantic retrieval using brute-force vector search
-* ✅ Split documents into sentence-based retrieval chunks
-* ✅ Generate embeddings for individual chunks
-* ✅ Perform chunk-level semantic retrieval
-* ✅ Rank retrieved chunks using cosine similarity
-* ✅ Return the Top-K most relevant chunks
-
-## Planned
-
-* ⏳ Vector indexing (uSearch)
-* ⏳ Persistent embedding storage
-* ⏳ Retrieval evaluation metrics
-* ⏳ Hybrid search (BM25 + Dense Retrieval)
-* ⏳ Cross-encoder reranking
-* ⏳ LLM response generation
-* ⏳ Complete Retrieval-Augmented Generation pipeline
-
----
-
-# High-Level Architecture
-
-```text
-                    User Query
-                         │
-                         ▼
-               EmbeddingGenerator
-                         │
-                         ▼
-                 Query Embedding
-                         │
-                         ▼
-                  Retriever.search()
-                         │
-        ┌────────────────┴────────────────┐
-        │                                 │
-        ▼                                 ▼
-chunk.embedding                 cosine_similarity()
-        │                                 │
-        └──────────────┬──────────────────┘
-                       ▼
-             Similarity Scores
-                       ▼
-              Sort Highest → Lowest
-                       ▼
-                Return Top-K Chunks
-
-
----
-
-# Retrieval Pipeline
-
-The current system executes the following pipeline:
-
-```
-Text Documents
-      │
-      ▼
-Document Loader
-      │
-      ▼
-Document Objects
-      │
-      ▼
+Documents
+    |
+    v
+Loader
+    |
+    v
+Documents
+    |
+    v
 Chunker
-      │
-      ▼
-Chunk Objects
-      │
-      ▼
-Embedding Generator 
-      │
-      ▼
-Chunk Embeddings
-      │
-      ▼
-User Query
-      │
-      ▼
-Query Embedding
-      │
-      ▼
+    |
+    v
+Chunks
+    |
+    v
+EmbeddingGenerator
+    |
+    v
+Embedded Chunks
+    |
+    v
 Retriever
-      │
-      ▼
+    |
+    +---- query
+    |
+    v
+Query Embedding
+    |
+    v
 Cosine Similarity
-      │
-      ▼
-Rank Chunks
-      │
-      ▼
-Top-K Results
+    |
+    v
+Ranked Chunks
 
+The current baseline is a dense semantic retriever:
 
-The retrieval system currently performs **dense semantic search** using cosine similarity over locally generated embedding vectors.
+query
+  -> embedding
+  -> compare against every chunk embedding
+  -> cosine similarity
+  -> sort
+  -> top-K
 
----
+Corpus
 
-# Project Structure
+The corpus covers concepts including:
 
-```text
-tiny-rag/
-│
-├── config.py
-├── document.py
-├── loader.py
-├── chunk.py
-├── chunker.py
-├── embedding.py
-├── similarity.py
-├── retriever.py
-├── main.py
-├── requirements.txt
-│
-└── documents/
-    ├── 001_information_retrieval.txt
-    ├── 002_embeddings.txt
-    ├── 003_cosine_similarity.txt
-    ├── ...
-```
+Information Retrieval
 
----
+Embeddings
 
-# Component Overview
+Cosine Similarity
 
-## Document
+BM25
 
-Represents a single document in the corpus.
+Dense Retrieval
 
-Stores:
+Vector Databases
 
-* ID
-* Title
-* File metadata
-* Raw text
-* Embedding vector
+Chunking
 
-The `Document` class is intentionally a data container and contains no retrieval logic.
+Reranking
 
----
+Hybrid Search
 
-## Loader
+RAG Pipeline
 
-Reads every text file from the corpus directory and converts each into a `Document` object.
+The latest run reported:
 
-Responsible only for:
+11 documents loaded
 
-* File discovery
-* Reading files
-* Creating document objects
+70 chunks created
 
----
-## Chunk
+70 chunk embeddings generated
 
-Represents the fundamental retrieval unit within the corpus.
+Chunk IDs such as 010-001 are the units used by Benchmark v1
+ground-truth labels.
 
-Stores:
+Benchmark v1
 
-Chunk ID
-Parent document ID
-Chunk text
-Embedding vector
+Each benchmark entry contains:
 
-Unlike a Document, a Chunk is designed to be retrieved directly by the semantic search pipeline.
----
-## Chunker
+{
+  "id": 40,
+  "information_need": "Definition of vector databases",
+  "description": "The user wants to understand what a vector database is.",
+  "queries": [
+    "What is a vector database?",
+    "Define vector database."
+  ],
+  "relevant_chunks": [
+    "006-001",
+    "006-002"
+  ]
+}
 
-Transforms a Document into a collection of smaller retrievable units.
+information_need identifies the underlying concept. queries contains
+multiple ways of expressing that need. relevant_chunks contains the
+labeled ground-truth chunk IDs.
 
-Current strategy:
+Benchmark v1 has been labeled and reviewed for consistency.
+
+Evaluation
+
+evaluation.py contains:
+
+Precision@K
+
+Recall@K
+
+Mean Reciprocal Rank (MRR)
+
+DCG
+
+nDCG@K
+
+Hit Rate@K
+
+The evaluator compares:
+
+actual
+    =
+benchmark["relevant_chunks"]
+
+predicted
+    =
+retrieval_system.search(...)[chunk IDs]
+
+evaluator.py runs every benchmark query and returns one result record
+per query.
+
+A result should contain:
+
+benchmark_id
+information_need
+query
+actual
+predicted
+precision
+recall
+mrr
+ndcg
+hit_rate
+
+report.py is responsible for:
+
+Level 1: overall performance
+
+Level 2: performance by information need
+
+Level 3: query-level failures
+
+Level 4 comparison between retrieval systems comes later.
+
+Current status
+
+Completed
+
+Document loader
+
+Document objects
 
 Sentence-based chunking
 
-Future strategies:
+Stable document/chunk IDs
 
-Paragraph chunking
-Token-based chunking
-Semantic chunking
+Chunk embeddings
 
-Separating chunking into its own component allows retrieval strategies to evolve independently of the rest of the pipeline.
----
-## EmbeddingGenerator
+Dense semantic retrieval
 
-Converts natural language into dense numerical vectors using a locally hosted Ollama embedding model.
+Cosine similarity
 
-Input:
+Ranked top-K retrieval
 
-```
-Text
-```
+Benchmark v1 design
 
-Output:
+Benchmark v1 labeling
 
-```
-Embedding Vector
-```
+Benchmark consistency review
 
-This component encapsulates all interaction with Ollama.
+Precision@K
 
----
+Recall@K
 
-## Similarity
+MRR
 
-Provides reusable mathematical utilities for comparing embedding vectors.
+DCG
 
-Currently implements:
+nDCG
 
-* Cosine Similarity
+Hit Rate@K
 
-The module is intentionally independent of the retrieval system.
+Evaluator design
 
----
+Report design
 
-## Retriever
+Not yet cleanly integrated
 
-Performs semantic search across the document corpus.
+The individual components exist, but the evaluation pipeline is not yet
+cleanly executable end-to-end.
 
-Responsibilities:
+Known integration issues in the current pasted code:
 
-* Compare query embedding against every chunk embedding
-* Compute similarity scores
-* Rank chunks by semantic similarity
-* Return the Top-K most relevant chunks
+main.py creates retriever but later calls
+retrieval_system.search(...).
 
-The retriever assumes embeddings already exist and does not generate them.
+evaluator.py is duplicated in the working material.
 
----
+evaluator.py is missing a comma after
+"information_need": entry["information_need"].
 
-### Evaluation/Evaluator
+The report runner references chunks and embedding_generator
+without constructing them.
 
-Runs every benchmark query and returns one result record per query. 
+report.py defines reporting functions but does not itself build a
+retrieval system or run the evaluator.
 
-Responsibilities:
+Corpus/retrieval construction currently lives inside main.py,
+making reuse from report.py awkward.
 
-* Precision@K
+These are integration problems, not a failure of the underlying design.
 
-* Recall@K
+Immediate milestone
 
-* Mean Reciprocal Rank (MRR)
+Run Benchmark v1 end-to-end against the current dense retriever and
+produce a trustworthy baseline report.
 
-* DCG
+Desired flow:
 
-* nDCG@K
+benchmark_v1.json
+        |
+        v
+retrieval system
+        |
+        v
+evaluator.py
+        |
+        v
+query-level results
+        |
+        v
+report.py
+        |
+        v
+TinyRAG Evaluation Report
 
-* Hit Rate@K
----
+Only after this works should new retrieval strategies be implemented.
 
-## Main
+Future experiments
 
-Coordinates the complete retrieval pipeline.
+BM25
 
-Responsibilities:
+Implement a lexical retriever with the same conceptual interface:
 
-1. Load documents
-2. Generate embeddings
-3. Embed user query
-4. Retrieve chunks
-5. Display ranked results
+search(query, top_k)
 
-Business logic remains inside dedicated modules.
+Evaluate it against the exact same Benchmark v1.
 
----
+Hybrid retrieval
 
-# Technologies
+Combine BM25 and dense retrieval and compare:
 
-* Python
-* Ollama
-* nomic-embed-text
-* Dense Vector Embeddings
-* Cosine Similarity
-* Semantic Search
-* Retrieval-Augmented Generation (RAG)
+Dense
+BM25
+Hybrid
 
-Future:
+Reranking
 
-* uSearch
-* Hybrid Retrieval
-* Cross-Encoder Reranking
+Later:
 
----
+first-stage retrieval
+        |
+candidate set
+        |
+reranker
+        |
+final ranking
 
-# Design Principles
+Latency
 
-This project emphasizes modular software architecture in addition to machine learning concepts.
+Measure retrieval latency alongside quality:
 
-Each module has a single responsibility:
+Retriever    Quality    Latency
+Dense        ...        ...
+BM25         ...        ...
+Hybrid       ...        ...
+Reranked     ...        ...
 
-| Component          | Responsibility                 |
-| ------------------ | -------------------------------|
-| Document           | Store document data            |
-| Loader             | Read corpus from disk          |
-| Chunk              | Stores retrievable unit        |
-| Chunker            | Transform Document into Chunks |
-| EmbeddingGenerator | Generate embeddings            |
-| Similarity         | Compare vectors                |
-| Retriever          | Perform semantic retrieval     |
-| Main               | Orchestrate the pipeline       |
+LLM generation
 
-This separation makes components independently testable and replaceable. For example, the current brute-force retrieval implementation can later be replaced with a vector index (uSearch) without changing the rest of the system.
+After retrieval is stable:
 
----
+User query
+    |
+    v
+Retriever
+    |
+    v
+Relevant chunks
+    |
+    v
+Context
+    |
+    v
+LLM
+    |
+    v
+Answer
 
-# Current Limitations
+Agentic RAG should come later, after the underlying retrieval pipeline
+is understood.
 
-This project intentionally prioritizes understanding over optimization.
+Project philosophy
 
-Current limitations include:
+TinyRAG is intentionally small. Its purpose is to make retrieval
+mechanics visible rather than hiding them behind a framework.
 
-* Current chunking strategy is sentence-based and does not preserve multi-sentence context.
-* Chunk embeddings are regenerated on every execution.
-* Retrieval uses brute-force linear search (O(N)).
-* No persistent vector index has been implemented.
-* No reranking stage.
-* No automated retrieval evaluation metrics yet.
-* No response generation with an LLM.
+The project is intended to teach:
 
-These limitations are intentional and will be addressed incrementally throughout future development.
+what a corpus is
 
----
+what chunks are
 
-# Example Output
-```
-==============================
-Retrieval Results
-==============================
+what embeddings represent
 
-Query:
-What is BM25?
+how similarity works
 
-Rank 1
-Chunk ID: 004-002
-Document ID: 004
-Similarity Score: 0.9412
+how retrieval produces a ranking
 
-BM25 is a lexical ranking algorithm commonly used
-in information retrieval systems...
-```
----
+why retrieval fails
 
-# Installation
+how relevance labels define ground truth
 
-Clone the repository:
+how retrieval quality is measured
 
-```bash
-git clone https://github.com/<your-username>/tiny-rag.git
+how retrieval strategies trade off quality and speed
 
-cd tiny-rag
-```
+The system is currently at:
 
-Install Python dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Install the embedding model:
-
-```bash
-ollama pull nomic-embed-text
-```
-
-Run the project:
-
-```bash
-python main.py
-```
-
----
-
-# Roadmap
-
-## Phase 1 — Retrieval Foundations ✅
-
-* [x] Document loading
-* [x] Structured document representation
-* [x] Local embedding generation
-* [x] Cosine similarity
-* [x] Semantic retrieval
-* [x] Top-K ranking
-
-## Phase 2 — Retrieval Improvements
-
-* [x] Sentence-based chunking
-* [x] Chunk embeddings
-* [x] Chunk-level retrieval
-* [ ] Persistent embedding storage
-* [ ] Vector indexing (uSearch)
-* [ ] Retrieval benchmarking
-* [ ] Recall@K
-* [ ] Mean Reciprocal Rank
-* [ ] Precision@K
-* [ ] NDCG
-* [ ] Latency measurement
-
-## Phase 3 — Production-Style RAG
-
-* [ ] Hybrid Retrieval (BM25 + Dense)
-* [ ] Cross-Encoder Reranking
-* [ ] Prompt construction
-* [ ] LLM response generation
-* [ ] End-to-end Retrieval-Augmented Generation pipeline
-
----
-
-# What I'm Learning
-
-This project has helped me develop a practical understanding of:
-
-* Information Retrieval (IR)
-* Semantic Search
-* Dense Embeddings
-* Vector Similarity
-* Retrieval-Augmented Generation (RAG)
-* Software architecture for AI systems
-* Modular component design
-* Retrieval system evaluation
-
-More importantly, it has given me an appreciation for how production retrieval systems are engineered—from the underlying mathematics of vector similarity to the software design decisions that make complex AI systems maintainable and extensible.
----
-# Experimental Observations
-
-As the retrieval pipeline evolves, I am evaluating its behavior using representative queries to better understand the strengths and limitations of different retrieval strategies. The goal is not only to build a working system, but to measure retrieval quality and use those observations to guide future improvements.
-
----
-
-## Experiment 1 — Sentence-Based Chunk Retrieval
-
-**Query**
-
-```text
-What is RAG pipeline?
-```
-
-### Top Retrieval Results
-
-| Rank | Chunk | Similarity | Retrieved Text |
-|------|--------|------------|----------------|
-| **1** | 006-006 | **0.6835** | "They are a core infrastructure component in modern RAG systems because they enable scalable semantic search." |
-| **2** | 010-005 | **0.6678** | "RAG systems are widely used in question answering, enterprise search, and knowledge assistants." |
-| **3** | 010-001 | **0.6372** | "Retrieval-Augmented Generation (RAG) is a framework that enhances large language models by retrieving relevant documents before generating a response." |
-
-### Observation
-
-The retriever successfully returned the correct definition of **Retrieval-Augmented Generation (RAG)** within the Top-3 results. However, the defining sentence was ranked **third** instead of first.
-
-From a human perspective, the third result is the most direct answer to the query, while the first two results provide supporting information about RAG systems rather than defining the concept itself.
-
-### Analysis
-
-This experiment highlights an important characteristic of dense embedding retrieval:
-
-- Retrieving relevant information is not the same as ranking it optimally.
-- Embedding similarity measures semantic relatedness, which does not always align with user intent.
-- Sentence-level chunking may remove surrounding context that helps distinguish a definition from supporting details.
-- Retrieval quality should be evaluated independently from retrieval correctness.
-
-Although the ranking was imperfect, the retriever successfully surfaced the correct information, indicating that the retrieval stage is functioning correctly while leaving room for ranking improvements.
-
-### Future Experiments
-
-To improve retrieval quality, future iterations of this project will investigate:
-
-- Paragraph-based chunking
-- Semantic chunking
-- Hybrid retrieval (BM25 + Dense Retrieval)
-- Cross-encoder reranking
-- Retrieval evaluation using Recall@K, Precision@K, MRR, and NDCG
-
----
-
-This observation serves as the project's first retrieval benchmark and establishes a baseline for comparing future improvements to chunking strategies, embedding models, and ranking algorithms.
----
-
-# License
-
-This project is intended for educational and learning purposes.
+Corpus
+  -> Chunking
+  -> Embeddings
+  -> Dense Retrieval
+  -> Benchmark v1
+  -> Evaluation Metrics
+  -> [CURRENT: Integration]
+  -> Baseline Report
+  -> BM25
+  -> Hybrid
+  -> Reranking
+  -> LLM / RAG generation
+  -> Advanced / Agentic RAG
