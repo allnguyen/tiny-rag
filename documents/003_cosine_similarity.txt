@@ -1,4 +1,6 @@
-Cosine similarity is a metric used to measure the similarity between two vectors by computing the cosine of the angle between them. It is widely used in embedding-based retrieval systems.
+Cosine similarity is a metric used to measure the similarity between two vectors by computing the cosine of the angle between them. 
+
+It is widely used in embedding-based retrieval systems.
 
 The formula compares the dot product of two vectors divided by the product of their magnitudes.
 

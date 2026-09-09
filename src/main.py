@@ -85,43 +85,52 @@ retrieval_system = build_retrieval_system()
 
 
 # ====================================
-# 5. User Query
-# ====================================
-
-user_query = input("\nEnter your query: ")
-
-print("\n==============================")
-print("Search Query")
-print("==============================")
-
-print(user_query)
-
-
-
-# ====================================
-# 6. Retrieve relevant chunks
-# ====================================
-
-results = retrieval_system.search(
-    user_query,
-    top_k=3,
-)
-
-
-# ====================================
-# 7. Display results
+# 5. Interactive Query Loop
 # ====================================
 
 print("\n==============================")
-print("Retrieval Results")
+print("TinyRAG Ready")
 print("==============================")
 
+print("Enter a query to search the corpus.")
+print("Type 'exit' or 'quit' to stop.")
 
-for rank, (chunk, score) in enumerate(results, start=1):
 
-    print(f"\nRank {rank}")
-    print(f"Chunk ID: {chunk.id}")
-    print(f"Document ID: {chunk.document_id}")
-    print(f"Similarity Score: {score:.4f}")
-    print("Text:")
-    print(chunk.text)
+while True:
+
+    user_query = input("\nWhat is your query? ").strip()
+
+    # Exit condition
+    if user_query.lower() in {"exit", "quit"}:
+        print("\nExiting TinyRAG.")
+        break
+
+    # Ignore empty queries
+    if not user_query:
+        continue
+
+    # Generate query embedding
+    query_embedding = embedding_generator.generate(
+        user_query
+    )
+
+    # Retrieve relevant chunks
+    results = retrieval_system.search(
+        user_query,
+        top_k=3,
+    )
+
+    # Display results
+    print("\n==============================")
+    print("Retrieval Results")
+    print("==============================")
+
+
+    for rank, (chunk, score) in enumerate(results, start=1):
+
+        print(f"\nRank {rank}")
+        print(f"Chunk ID: {chunk.id}")
+        print(f"Document ID: {chunk.document_id}")
+        print(f"Similarity Score: {score:.4f}")
+        print("Text:")
+        print(chunk.text)

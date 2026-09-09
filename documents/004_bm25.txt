@@ -1,4 +1,6 @@
-BM25 is a ranking function used in traditional search engines for lexical retrieval. It is based on probabilistic information retrieval and improves upon TF-IDF.
+BM25 is a ranking function used in traditional search engines for lexical retrieval. 
+
+It is based on probabilistic information retrieval and improves upon TF-IDF.
 
 BM25 scores documents based on term frequency (how often query terms appear), inverse document frequency (how rare the terms are across the corpus), and document length normalization.
 
