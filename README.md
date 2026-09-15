@@ -1,27 +1,43 @@
-TinyRAG
+# TinyRAG
 
-TinyRAG is a small Retrieval-Augmented Generation (RAG) learning system
-built from first principles.
+TinyRAG is a small **Retrieval-Augmented Generation (RAG) learning system** built from first principles.
 
-The goal is to understand retrieval systems by implementing their core
-mechanics directly, measuring their behavior, and then comparing
-retrieval strategies.
+The goal is to understand retrieval systems by implementing their core mechanics directly, measuring their behavior, and comparing different retrieval strategies.
 
-Current objective
+---
 
-The current phase is retrieval evaluation.
+## Current Objective
 
-The project now has a corpus, chunking, embeddings, a dense retriever, a
-labeled Benchmark v1, retrieval metrics, an evaluator, and a reporting
-layer. The immediate goal is to connect these pieces into one reliable
-end-to-end evaluation pipeline.
+The current phase of TinyRAG is **retrieval evaluation**.
 
-Current architecture
+The project currently includes:
 
+* A document corpus
+* Document loading
+* Sentence-based chunking
+* Stable document and chunk IDs
+* Embedding generation
+* A dense semantic retriever
+* A labeled **Benchmark v1**
+* Retrieval evaluation metrics
+* An evaluator
+* A reporting layer
+
+The immediate goal is to connect these components into one reliable, end-to-end evaluation pipeline.
+
+Once the baseline is working, retrieval strategies will become replaceable so that **Dense Retrieval, BM25, Hybrid Retrieval, and later Reranking** can be evaluated using the same benchmark and evaluation framework.
+
+---
+
+## Architecture
+
+The current retrieval pipeline is:
+
+```text
 Documents
     |
     v
-Loader
+Document Loader
     |
     v
 Documents
@@ -33,73 +49,92 @@ Chunker
 Chunks
     |
     v
-EmbeddingGenerator
+Embedding Generator
     |
     v
 Embedded Chunks
     |
     v
-Retriever
+Dense Retriever
     |
-    +---- query
-    |
-    v
+    +---- Query
+            |
+            v
+      Query Embedding
+            |
+            v
+      Cosine Similarity
+            |
+            v
+       Ranked Chunks
+            |
+            v
+           Top-K
+```
+
+### Dense Retrieval Baseline
+
+The current baseline uses dense semantic retrieval:
+
+```text
+Query
+  |
+  v
 Query Embedding
-    |
-    v
+  |
+  v
+Compare against chunk embeddings
+  |
+  v
 Cosine Similarity
-    |
-    v
-Ranked Chunks
+  |
+  v
+Sort by similarity
+  |
+  v
+Return Top-K chunks
+```
 
-The current baseline is a dense semantic retriever:
+This intentionally implements the core retrieval mechanics directly rather than hiding them behind a retrieval framework.
 
-query
-  -> embedding
-  -> compare against every chunk embedding
-  -> cosine similarity
-  -> sort
-  -> top-K
+---
 
-Corpus
+# Corpus
 
-The corpus covers concepts including:
+The current corpus covers concepts including:
 
-Information Retrieval
+* Information Retrieval
+* Embeddings
+* Cosine Similarity
+* BM25
+* Dense Retrieval
+* Vector Databases
+* Chunking
+* Reranking
+* Hybrid Search
+* RAG Pipeline
 
-Embeddings
+### Current Corpus Size
 
-Cosine Similarity
+The latest successful run reported:
 
-BM25
+```text
+Documents loaded:       11
+Chunks created:         70
+Chunk embeddings:       70
+```
 
-Dense Retrieval
+Stable chunk IDs such as `010-001` are used as the units referenced by Benchmark v1 ground-truth labels.
 
-Vector Databases
+---
 
-Chunking
+# Benchmark v1
 
-Reranking
-
-Hybrid Search
-
-RAG Pipeline
-
-The latest run reported:
-
-11 documents loaded
-
-70 chunks created
-
-70 chunk embeddings generated
-
-Chunk IDs such as 010-001 are the units used by Benchmark v1
-ground-truth labels.
-
-Benchmark v1
+Benchmark v1 provides the ground truth used to evaluate retrieval quality.
 
 Each benchmark entry contains:
 
+```json
 {
   "id": 40,
   "information_need": "Definition of vector databases",
@@ -113,44 +148,66 @@ Each benchmark entry contains:
     "006-002"
   ]
 }
+```
 
-information_need identifies the underlying concept. queries contains
-multiple ways of expressing that need. relevant_chunks contains the
-labeled ground-truth chunk IDs.
+## Benchmark Structure
+
+### `information_need`
+
+Identifies the underlying concept or information need.
+
+### `description`
+
+Describes what the user is trying to understand or retrieve.
+
+### `queries`
+
+Contains multiple ways of expressing the same information need.
+
+### `relevant_chunks`
+
+Contains the labeled ground-truth chunk IDs that are considered relevant to the information need.
 
 Benchmark v1 has been labeled and reviewed for consistency.
 
-Evaluation
+The benchmark is designed to distinguish **information needs** from individual query wording so that multiple query formulations can be evaluated against the same ground truth.
 
-evaluation.py contains:
+---
 
-Precision@K
+# Evaluation
 
-Recall@K
+TinyRAG evaluates retrieval results against Benchmark v1.
 
-Mean Reciprocal Rank (MRR)
+The evaluation layer currently implements:
 
-DCG
+* Precision@K
+* Recall@K
+* Mean Reciprocal Rank (MRR)
+* DCG
+* nDCG@K
+* Hit Rate@K
 
-nDCG@K
+The evaluator compares the benchmark ground truth against the chunks returned by the retrieval system.
 
-Hit Rate@K
+Conceptually:
 
-The evaluator compares:
-
-actual
+```text
+Actual
     =
 benchmark["relevant_chunks"]
 
-predicted
+Predicted
     =
-retrieval_system.search(...)[chunk IDs]
+retrieval_system.search(query, top_k)
+```
 
-evaluator.py runs every benchmark query and returns one result record
-per query.
+The evaluator runs every benchmark query and produces one result record per query.
 
-A result should contain:
+## Query-Level Evaluation Record
 
+Each result should contain:
+
+```text
 benchmark_id
 information_need
 query
@@ -161,162 +218,217 @@ recall
 mrr
 ndcg
 hit_rate
+```
 
-report.py is responsible for:
+---
 
-Level 1: overall performance
+# Reporting
 
-Level 2: performance by information need
+`report.py` is responsible for aggregating evaluation results into progressively more useful views.
 
-Level 3: query-level failures
+### Level 1 — Overall Performance
 
-Level 4 comparison between retrieval systems comes later.
+Overall retrieval performance across the benchmark.
 
-Current status
-
-Completed
-
-Document loader
-
-Document objects
-
-Sentence-based chunking
-
-Stable document/chunk IDs
-
-Chunk embeddings
-
-Dense semantic retrieval
-
-Cosine similarity
-
-Ranked top-K retrieval
-
-Benchmark v1 design
-
-Benchmark v1 labeling
-
-Benchmark consistency review
-
+```text
 Precision@K
-
 Recall@K
-
 MRR
-
-DCG
-
-nDCG
-
+nDCG@K
 Hit Rate@K
+```
 
-Evaluator design
+### Level 2 — Performance by Information Need
 
-Report design
+Identify which concepts the retrieval system handles well or poorly.
 
-Not yet cleanly integrated
+### Level 3 — Query-Level Failures
 
-The individual components exist, but the evaluation pipeline is not yet
-cleanly executable end-to-end.
+Inspect individual queries where retrieval failed or performed poorly.
 
-Known integration issues in the current pasted code:
+### Level 4 — Retrieval System Comparison
 
-main.py creates retriever but later calls
-retrieval_system.search(...).
+This will be added later to compare different retrieval strategies using the same benchmark.
 
-evaluator.py is duplicated in the working material.
+```text
+Dense Retrieval
+      |
+      +------+
+             |
+BM25 --------+----> Evaluation ----> Comparison
+             |
+Hybrid ------+
+```
 
-evaluator.py is missing a comma after
-"information_need": entry["information_need"].
+---
 
-The report runner references chunks and embedding_generator
-without constructing them.
+# Current Status
 
-report.py defines reporting functions but does not itself build a
-retrieval system or run the evaluator.
+## Completed
 
-Corpus/retrieval construction currently lives inside main.py,
-making reuse from report.py awkward.
+* [x] Document loader
+* [x] Document objects
+* [x] Sentence-based chunking
+* [x] Stable document/chunk IDs
+* [x] Chunk embeddings
+* [x] Dense semantic retrieval
+* [x] Cosine similarity
+* [x] Ranked Top-K retrieval
+* [x] Benchmark v1 design
+* [x] Benchmark v1 labeling
+* [x] Benchmark consistency review
+* [x] Precision@K
+* [x] Recall@K
+* [x] MRR
+* [x] DCG
+* [x] nDCG@K
+* [x] Hit Rate@K
+* [x] Evaluator design
+* [x] Report design
 
-These are integration problems, not a failure of the underlying design.
+## Current Integration Work
 
-Immediate milestone
+The individual components exist, but the evaluation pipeline is not yet cleanly executable end-to-end.
 
-Run Benchmark v1 end-to-end against the current dense retriever and
-produce a trustworthy baseline report.
+Current integration issues include:
 
-Desired flow:
+* `main.py` creates a retriever but later calls `retrieval_system.search(...)`.
+* `evaluator.py` is duplicated in the current working material.
+* `evaluator.py` is missing a comma after `"information_need": entry["information_need"]`.
+* The report runner references chunks and `embedding_generator` without constructing them.
+* `report.py` defines reporting functions but does not itself build a retrieval system or run the evaluator.
+* Corpus and retrieval construction currently live inside `main.py`, making reuse from `report.py` awkward.
 
+These are **integration issues rather than failures of the underlying retrieval or evaluation design**.
+
+---
+
+# Immediate Milestone
+
+The next milestone is:
+
+> **Run Benchmark v1 end-to-end against the current dense retriever and produce a trustworthy baseline report.**
+
+The desired flow is:
+
+```text
 benchmark_v1.json
         |
         v
-retrieval system
+Retrieval System
         |
         v
 evaluator.py
         |
         v
-query-level results
+Query-Level Results
         |
         v
 report.py
         |
         v
 TinyRAG Evaluation Report
+```
 
-Only after this works should new retrieval strategies be implemented.
+New retrieval strategies will only be implemented after this baseline evaluation pipeline works reliably.
 
-Future experiments
+---
 
-BM25
+# Future Experiments
 
-Implement a lexical retriever with the same conceptual interface:
+## 1. BM25
 
+Implement a lexical retriever using the same conceptual interface:
+
+```python
 search(query, top_k)
+```
 
-Evaluate it against the exact same Benchmark v1.
+Evaluate BM25 against the exact same Benchmark v1.
 
-Hybrid retrieval
+This will allow direct comparison between:
 
-Combine BM25 and dense retrieval and compare:
+```text
+Dense Retrieval
+vs.
+BM25
+```
 
+---
+
+## 2. Hybrid Retrieval
+
+Combine lexical and semantic retrieval.
+
+The goal is to compare:
+
+```text
 Dense
 BM25
 Hybrid
+```
 
-Reranking
+using the same benchmark and metrics.
 
-Later:
+This will make it possible to investigate questions such as:
 
-first-stage retrieval
+* When does semantic retrieval perform better?
+* When does lexical retrieval perform better?
+* Does combining the two improve overall retrieval quality?
+* Which information needs benefit most from hybrid retrieval?
+
+---
+
+## 3. Reranking
+
+A later retrieval pipeline may introduce a reranking stage:
+
+```text
+First-Stage Retrieval
         |
-candidate set
+        v
+Candidate Set
         |
-reranker
+        v
+Reranker
         |
-final ranking
+        v
+Final Ranking
+```
 
-Latency
+This will allow evaluation of the tradeoff between retrieval quality and additional computation.
 
-Measure retrieval latency alongside quality:
+---
 
-Retriever    Quality    Latency
-Dense        ...        ...
-BM25         ...        ...
-Hybrid       ...        ...
-Reranked     ...        ...
+## 4. Retrieval Latency
 
-LLM generation
+Quality will eventually be evaluated alongside retrieval latency.
 
-After retrieval is stable:
+Example:
 
-User query
+| Retriever | Quality | Latency |
+| --------- | ------: | ------: |
+| Dense     |     ... |     ... |
+| BM25      |     ... |     ... |
+| Hybrid    |     ... |     ... |
+| Reranked  |     ... |     ... |
+
+The goal is to understand the tradeoff between **retrieval quality and system cost/latency**, rather than optimizing for a single metric.
+
+---
+
+# LLM Generation
+
+Once retrieval is stable, an LLM generation layer can be added:
+
+```text
+User Query
     |
     v
 Retriever
     |
     v
-Relevant chunks
+Relevant Chunks
     |
     v
 Context
@@ -326,47 +438,124 @@ LLM
     |
     v
 Answer
+```
 
-Agentic RAG should come later, after the underlying retrieval pipeline
-is understood.
+The focus will remain on understanding the relationship between retrieval quality and downstream answer quality.
 
-Project philosophy
+---
 
-TinyRAG is intentionally small. Its purpose is to make retrieval
-mechanics visible rather than hiding them behind a framework.
+# Advanced / Agentic RAG
 
-The project is intended to teach:
+Agentic and multi-step retrieval will come **after the underlying retrieval pipeline is understood and evaluated**.
 
-what a corpus is
+A possible future direction is:
 
-what chunks are
+```text
+User Query
+    |
+    v
+Query Analysis
+    |
+    v
+Query Decomposition
+    |
+    +----------+----------+
+    |                     |
+    v                     v
+Sub-query A           Sub-query B
+    |                     |
+    v                     v
+Retrieve               Retrieve
+    |                     |
+    +----------+----------+
+               |
+               v
+        Combined Evidence
+               |
+               v
+          Final Answer
+```
 
-what embeddings represent
+The goal is to understand how retrieval behaves when a system must perform multiple retrieval steps rather than treating agentic RAG as a black box.
 
-how similarity works
+---
 
-how retrieval produces a ranking
+# Project Philosophy
 
-why retrieval fails
+TinyRAG is intentionally small.
 
-how relevance labels define ground truth
+The purpose is not to build a production-scale RAG platform. The purpose is to make the mechanics of retrieval **visible, measurable, and replaceable**.
 
-how retrieval quality is measured
+The project is designed to build an understanding of:
 
-how retrieval strategies trade off quality and speed
+* What a corpus is
+* How documents are represented
+* What chunks are
+* What embeddings represent
+* How similarity works
+* How retrieval produces a ranking
+* How relevance labels define ground truth
+* Why retrieval systems fail
+* How retrieval quality is measured
+* How different retrieval strategies behave
+* How retrieval quality trades off against latency and complexity
 
-The system is currently at:
+The guiding principle is:
 
+> **Understand the retrieval system before hiding it behind a framework.**
+
+---
+
+# Roadmap
+
+```text
 Corpus
-  -> Chunking
-  -> Embeddings
-  -> Dense Retrieval
-  -> Benchmark v1
-  -> Evaluation Metrics
-  -> [CURRENT: Integration]
-  -> Baseline Report
-  -> BM25
-  -> Hybrid
-  -> Reranking
-  -> LLM / RAG generation
-  -> Advanced / Agentic RAG
+   |
+   v
+Chunking
+   |
+   v
+Embeddings
+   |
+   v
+Dense Retrieval
+   |
+   v
+Benchmark v1
+   |
+   v
+Evaluation Metrics
+   |
+   v
+[ CURRENT: Integration ]
+   |
+   v
+Baseline Report
+   |
+   v
+BM25
+   |
+   v
+Hybrid Retrieval
+   |
+   v
+Reranking
+   |
+   v
+LLM / RAG Generation
+   |
+   v
+Advanced / Agentic RAG
+```
+
+---
+
+# Current Goal
+
+**Build a reliable retrieval evaluation baseline before adding more complexity.**
+
+The immediate question TinyRAG is trying to answer is:
+
+> **How well does a simple dense retrieval system retrieve the information a user actually needs, and where does it fail?**
+
+Once that baseline is trustworthy, more advanced retrieval strategies can be added and evaluated systematically.
