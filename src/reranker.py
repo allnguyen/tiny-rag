@@ -19,10 +19,10 @@ class CrossEncoderReranker:
         self,
         model_name: str = RERANKER_MODEL,
     ):
-
+        print("Loading cross-encover reranker...")
         # Load reranker model 
         self.model = CrossEncoder(model_name)
-
+        print("Cross-eocoder reranker loaded.")
         
 
 

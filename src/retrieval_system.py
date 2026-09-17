@@ -6,7 +6,7 @@ Coordinates dense retrieval and cross-encoder reranking.
 
 from retriever import Retriever
 from reranker import CrossEncoderReranker
-from config import RERANKER_CANDIDATE_K
+from config import RETRIEVAL_TOP_K, RERANKER_CANDIDATE_K
 from chunk import Chunk
 
 
@@ -25,7 +25,7 @@ class RetrievalSystem:
     def search(
         self,
         query: str,
-        top_k: int = 3,
+        top_k: int = RETRIEVAL_TOP_K,
         candidate_k: int = RERANKER_CANDIDATE_K,
     ) -> list[tuple[Chunk, float]]:
 
@@ -45,3 +45,23 @@ class RetrievalSystem:
         )
 
         return results
+
+    def search_with_diagnostics(
+            self,
+            query: str,
+            top_k: int = 3,
+            candidate_k: int = RERANKER_CANDIDATE_K,
+        ):
+    
+            candidates = self.retriever.search(
+                query,
+                top_k=candidate_k,
+            )
+    
+            results = self.reranker.rerank(
+                query=query,
+                candidates=candidates,
+                top_k=top_k,
+            )
+    
+            return candidates, results

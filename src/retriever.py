@@ -17,6 +17,7 @@ embedding generation. It does not:
 - perform prompt engineering
 """
 
+from config import RETRIEVAL_TOP_K
 from chunk import Chunk
 from similarity import cosine_similarity
 from embedding import EmbeddingGenerator
@@ -40,7 +41,7 @@ class Retriever:
     def search(
         self, 
         query: str,
-        top_k: int = 3
+        top_k: int = RETRIEVAL_TOP_K
     ) -> list[tuple[Chunk, float]]:
         
         """

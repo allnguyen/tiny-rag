@@ -6,6 +6,7 @@ Central location for project configuration.
 
 from pathlib import Path
 
+RETRIEVAL_TOP_K = 3
 
 # ============================================================
 # Project Paths
