@@ -22,6 +22,7 @@ The project currently includes:
 * Retrieval evaluation metrics
 * An evaluator
 * A reporting layer
+* A reranker
 
 The immediate goal is to connect these components into one reliable, end-to-end evaluation pipeline.
 
@@ -285,23 +286,8 @@ Hybrid ------+
 * [x] Hit Rate@K
 * [x] Evaluator design
 * [x] Report design
+* [x] Reranker
 
-## Current Integration Work
-
-The individual components exist, but the evaluation pipeline is not yet cleanly executable end-to-end.
-
-Current integration issues include:
-
-* `main.py` creates a retriever but later calls `retrieval_system.search(...)`.
-* `evaluator.py` is duplicated in the current working material.
-* `evaluator.py` is missing a comma after `"information_need": entry["information_need"]`.
-* The report runner references chunks and `embedding_generator` without constructing them.
-* `report.py` defines reporting functions but does not itself build a retrieval system or run the evaluator.
-* Corpus and retrieval construction currently live inside `main.py`, making reuse from `report.py` awkward.
-
-These are **integration issues rather than failures of the underlying retrieval or evaluation design**.
-
----
 
 # Immediate Milestone
 
@@ -527,9 +513,6 @@ Benchmark v1
 Evaluation Metrics
    |
    v
-[ CURRENT: Integration ]
-   |
-   v
 Baseline Report
    |
    v
@@ -550,12 +533,14 @@ Advanced / Agentic RAG
 
 ---
 
-# Current Goal
+# Current Findings and Goals
 
-**Build a reliable retrieval evaluation baseline before adding more complexity.**
+**Experiment with query-level retrieval failures to understand reranker shortcomings**
 
-The immediate question TinyRAG is trying to answer is:
+A cross-encoder reranker has been implemented into the Tiny RAG system. According to the evaluation reports, the reranker appears to have substantially improved ranking quality, particularly MRR and nDCG, while not improving Precision and Hit Rate. However, between evaluation_report_2026-09-09_16-02-40 and evaluation_report_2026-09-14_23-27-47, the evaluation benchmark went through another edit. 
 
-> **How well does a simple dense retrieval system retrieve the information a user actually needs, and where does it fail?**
+Redundant queries were removed so instead, the number of queries evaluated decreased from 217 to 206. Therefore, the experiment was not perfectly controlled. 
 
-Once that baseline is trustworthy, more advanced retrieval strategies can be added and evaluated systematically.
+This is still consistent with the hypothesis that Dense Retrieval is good at finding the correct semantic "neighborhood" , while cross-encoders are better at ranking candidates. 
+
+The goal now is to investigate any reranker failures at the query-level failures. Did a relevant chunk show up into the top 10 and did our reranker "push" it out? 
